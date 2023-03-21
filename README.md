@@ -1,3 +1,15 @@
 # Processamento de Imagens
 
-Programa de Pós Graduação de Ciência da Computação
+Trabalhos desenvolvidos no programa de Pós Graduação de Ciência da Computação para aulas de Processamento de Imagens
+
+## Setup 
+
+Preparar o ambiente Python 
+
+[Segue um tutorial](https://johnywalves.com.br/ambiente-python/)  
+
+Instalar as bibliotecas utilizadas
+
+```bash
+pip3 install pillow
+```
