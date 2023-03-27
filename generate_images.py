@@ -6,6 +6,8 @@
 from PIL import Image
 
 # Define function to create image
+
+
 def create_images(name, quantization):
     # Create a new black image with 256x256
     # Mode - P (8-bit pixels, mapped to any other mode using a color palette)
@@ -16,7 +18,7 @@ def create_images(name, quantization):
         for j in range(img.size[1]):
             pixels[i, j] = (quantization(i, j))  # Set the colour accordingly
 
-    img.save(name + '.bmp')  # Save file from name
+    img.save('./images/' + name + '.bmp')  # Save file from name
 
 
 # Create a.bmp image
@@ -47,12 +49,12 @@ def quantization_c(x, y):
     if y < 128:
         if inner_box(x, y):
             return 150
-        
+
         return 200
 
     if inner_box(x, y):
         return 200
-    
+
     return 150
 
 

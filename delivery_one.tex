@@ -1,3 +1,155 @@
+\documentclass{article}
+
+% Language setting
+% Replace `english' with e.g. `spanish' to change the document language
+\usepackage[portuguese]{babel}
+
+% Set page size and margins
+% Replace `letterpaper' with`a4paper' for UK/EU standard size
+\usepackage[letterpaper,top=2cm,bottom=2cm,left=3cm,right=3cm,marginparwidth=1.75cm]{geometry}
+
+
+% Useful packages
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage[colorlinks=true, allcolors=blue]{hyperref}
+\usepackage{float}
+\usepackage{listings}
+\usepackage{color}
+
+\definecolor{dkgreen}{rgb}{0,0.6,0}
+\definecolor{gray}{rgb}{0.5,0.5,0.5}
+\definecolor{mauve}{rgb}{0.58,0,0.82}
+
+\lstset{frame=tb,
+  language=Java,
+  aboveskip=3mm,
+  belowskip=3mm,
+  showstringspaces=false,
+  columns=flexible,
+  basicstyle={\small\ttfamily},
+  numbers=none,
+  numberstyle=\tiny\color{gray},
+  keywordstyle=\color{blue},
+  commentstyle=\color{dkgreen},
+  stringstyle=\color{mauve},
+  breaklines=true,
+  breakatwhitespace=true,
+  tabsize=3
+}
+
+\title{Criação e Rotulagem de Imagens}
+\author{Anderson Garrido Scaioni, Andréia Salmazo Bertasso, 
+Johny W. Alves}
+
+\begin{document}
+\maketitle
+
+\section{Exercício 6}
+
+\subsection{Enunciado}
+
+Escreva um programa para reproduzir as imagens apresentadas no slide 41. Considere que as imagens têm dimensões: 256x256 com 256 níveis de profundidade. Em seguida, o programa deve ser capaz de apresentar a taxa de amostragem e a profundidade de cada imagem.
+
+\subsection{Código Fonte}
+
+\begin{lstlisting}[language=Python]
+# Create images
+# in BMP from the struture
+# http://www.ue.eti.pg.gda.pl/fpgalab/zadania.spartan3/zad_vga_struktura_pliku_bmp_en.html
+
+# Install package `pip3 install pillow`
+from PIL import Image
+
+# Define function to create image
+def create_images(name, quantization):
+    # Create a new black image with 256x256
+    # Mode - P (8-bit pixels, mapped to any other mode using a color palette)
+    img = Image.new('P', (256, 256))
+
+    pixels = img.load()  # Create the pixel map
+    for i in range(img.size[0]):  # For every pixel:
+        for j in range(img.size[1]):
+            pixels[i, j] = (quantization(i, j))  # Set the colour accordingly
+
+    img.save('./images/' + name + '.bmp')  # Save file from name
+
+
+# Create a.bmp image
+create_images('a', lambda x, y: 200)
+
+
+# Create b.bmp image
+create_images('b', lambda x, y: 200 if y < 128 else 150)
+
+
+# Create c.bmp image
+def quantization_c(x, y):
+    # Coordenates to Boxs
+    # (X initial, Y inital, X final, Y final)
+    positions_boxs = [
+        [45, 55, 85, 75],
+        [173, 55, 213, 75],
+        [45, 55 + 128, 85, 75 + 128],
+        [173, 55 + 128, 213, 75 + 128]
+    ]
+
+    def inner_box(a, b):
+        for p in positions_boxs:
+            if (a > p[0]) and (a <= p[2]) and (b > p[1]) and (b <= p[3]):
+                return True
+        return False
+
+    if y < 128:
+        if inner_box(x, y):
+            return 150
+        
+        return 200
+
+    if inner_box(x, y):
+        return 200
+    
+    return 150
+
+
+create_images('c', quantization_c)
+
+
+# Create d.bmp image
+def quantization_d(x, y):
+    if (x // 128 == 1) and (y // 128 == 1):
+        return 225
+
+    if (x // 128 == 1) or (y // 128 == 1):
+        return 200
+
+    return 150
+
+
+create_images('d', quantization_d)
+
+
+# Create e.bmp image
+create_images('e', lambda x, y: 110 + (x // 64 * 10) + (y // 64 * 40))
+\end{lstlisting}
+
+\subsection{Explicação}
+
+O programa para geração de imagens foi criado na linguagem Python e utiliza o pacote “Pillow”, foi definida a função {\ttfamily create\textunderscore images(name, quantization):}    que cria a imagem com os parâmetros name (nome da imagem) e quantization (formula de quantificação dos cinzas), nessa função {\ttfamily img = Image.new('P', (256, 256))}   cria a imagem que é de 8 BITS de profundidade com tamanho 256x256 pixels, após a geração da imagem ela é salva em disco com a extensão bmp conforme o seguinte código  {\ttfamily img.save(name + '.bmp')}.
+
+A função é executada 5 vezes, para gerar assim as imagens a.bmp, b.bmp, c.bmp, d.bmp e e.bmp.  
+
+A figura \ref{fig:parte1} descreve o início do meu código fonte especificando o pacote a ser utilizando e a definição da função  create\textunderscore images, na figura \ref{fig:parte2} a função de definição da imagem é executada e as imagens a.bmp e b.bmp são criadas, na figura \ref{fig:parte3} é define o parâmetro de quantization da figura c e a função é executada assim a imagem c.bmp é criada, e por fim a figura \ref{fig:parte4}  define o parâmetro de quantization da figura d após a função de criação de imagem é executada 2 vezes criando as imagens d.bmp e e.bmp.
+
+\section{Exercício 11}
+
+\subsection{Enunciado}
+
+Considere as imagens produzidas no Exercício 6 e implemente um programa para realizar a rotulagem de componentes conexos (cluster/aglomerado). A rotulagem deve ser realizada por meio do “Hoshen–Kopelman algorithm”. O programa deve fornecer o total de componentes conexos e os rótulos atribuídos em cada região da imagem dada como entrada. Use vizinhança-8 como critério. Por fim, considerando a imagem (e) após a rotulagem, o programa deve apresentar as distâncias (DE, D4 e D8) entre os centros de dois componentes conexos (definidos (sorteados) aleatoriamente).
+
+\subsection{Código Fonte}
+
+\begin{lstlisting}[language=Python]
 # Install package `pip3 install pillow`
 from PIL import Image
 
@@ -211,3 +363,9 @@ cluster_image('d')
 
 # Clustering image e.bmp
 cluster_image('e')
+\end{lstlisting}
+
+\subsection{Explicação}
+O algoritmo de rotulagem utilizado foi "Hoshen-Kopelman", para a implementação foi utilizando a linguagem de programação Python e o pacote `"Pillow”, foi definido o numero de linhas e colunas são 256 e que a rotulagem é realizada através das cores, foi definida 4 funções: {\ttfamily find(labels, x):} , {\ttfamily union(labels, x, y):}, {\ttfamily cluster\textunderscore image(labels, label, name):}, {\ttfamily main(name): }. A função {\ttfamily main(name):} , recebe como parâmetro o nome da imagem que foi criada no exercício anterior, assim é executada 6 vezes uma para cada imagem.
+
+\end{document}
