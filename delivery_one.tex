@@ -135,11 +135,10 @@ create_images('e', lambda x, y: 110 + (x // 64 * 10) + (y // 64 * 40))
 
 \subsection{Explicação}
 
-O programa para geração de imagens foi criado na linguagem Python e utiliza o pacote “Pillow”, foi definida a função {\ttfamily create\textunderscore images(name, quantization):}    que cria a imagem com os parâmetros name (nome da imagem) e quantization (formula de quantificação dos cinzas), nessa função {\ttfamily img = Image.new('P', (256, 256))}   cria a imagem que é de 8 BITS de profundidade com tamanho 256x256 pixels, após a geração da imagem ela é salva em disco com a extensão bmp conforme o seguinte código  {\ttfamily img.save(name + '.bmp')}.
+O programa para geração de imagens foi criado na linguagem Python e utiliza o pacote “Pillow”, foi definida a função {\ttfamily create\textunderscore images(name, quantization)} que cria a imagem com os parâmetros name (nome da imagem) e quantization (quantificação dos cinzas), nessa função {\ttfamily img = Image.new('P', (256, 256))} a imagem criada é de 8 bits de profundidade com tamanho 256x256 pixels, após a geração da imagem ela é salva em disco na pasta images com a extensão bmp conforme o seguinte código  {\ttfamily  img.save('./images/' + name + '.bmp')}.
 
-A função é executada 5 vezes, para gerar assim as imagens a.bmp, b.bmp, c.bmp, d.bmp e e.bmp.  
+A função é executada 5 vezes, para gerar assim as imagens a.bmp, b.bmp, c.bmp, d.bmp e e.bmp na pasta images.  
 
-A figura \ref{fig:parte1} descreve o início do meu código fonte especificando o pacote a ser utilizando e a definição da função  create\textunderscore images, na figura \ref{fig:parte2} a função de definição da imagem é executada e as imagens a.bmp e b.bmp são criadas, na figura \ref{fig:parte3} é define o parâmetro de quantization da figura c e a função é executada assim a imagem c.bmp é criada, e por fim a figura \ref{fig:parte4}  define o parâmetro de quantization da figura d após a função de criação de imagem é executada 2 vezes criando as imagens d.bmp e e.bmp.
 
 \section{Exercício 11}
 
@@ -181,37 +180,22 @@ cluster_colors = [
 
 
 def distance_euclidean(first, second):
-    fxi, fyi, fxf, fyf = first
-    sxi, syi, sxf, syf = second
-
-    x1 = (fxf - fxi) / 2
-    y1 = (fyf - fyi) / 2
-    x2 = (sxi - sxf) / 2
-    y2 = (syi - syf) / 2 
+    (x1, y1) = first
+    (x2, y2) = second
 
     return str(math.sqrt(pow(x2 - x1, 2) + pow(y2 - y1, 2)))
 
 
 def distance_four(first, second):
-    fxi, fyi, fxf, fyf = first
-    sxi, syi, sxf, syf = second
-
-    x1 = (fxf - fxi) / 2
-    y1 = (fyf - fyi) / 2
-    x2 = (sxi - sxf) / 2
-    y2 = (syi - syf) / 2
+    (x1, y1) = first
+    (x2, y2) = second
 
     return str(abs(x1 - x2) + abs(y1 - y2))
 
 
 def distance_eight(first, second):
-    fxi, fyi, fxf, fyf = first
-    sxi, syi, sxf, syf = second
-
-    x1 = (fxf - fxi) / 2
-    y1 = (fyf - fyi) / 2
-    x2 = (sxi - sxf) / 2
-    y2 = (syi - syf) / 2
+    (x1, y1) = first
+    (x2, y2) = second
 
     return str(max(abs(x1 - x2), abs(y1 - y2)))
 
@@ -339,14 +323,22 @@ def cluster_image(name):
             code_connected = random.randrange(0, len(total_labels) - 1)
             second = positions_labels[code_connected]
 
-        print("\nCoordenadas Primeiro: (" + str(first[0]) + ', ' + str(
-            first[2]) + ") a (" + str(first[1]) + ', ' + str(first[3]) + ")")
-        print("Coordenadas Segundo: (" + str(second[0]) + ', ' + str(
-            second[2]) + ") a (" + str(second[1]) + ', ' + str(second[3]) + ")")
+        fxi, fyi, fxf, fyf = first
+        sxi, syi, sxf, syf = second
 
-        print("Distância Euclidiana: " + distance_euclidean(first, second))
-        print("Distância Quadro: " + distance_four(first, second))
-        print("Distância Oito: " + distance_eight(first, second))
+        x1 = (fxf - fxi + 1) / 2 + fxi
+        y1 = (fyf - fyi + 1) / 2 + fyi
+        x2 = (sxf - sxi + 1) / 2 + sxi
+        y2 = (syf - syi + 1) / 2 + syi
+
+        print("\nCoordenadas Primeiro: (" + str(fxi) + ', ' + str(
+            fyi) + ") a (" + str(fxf) + ', ' + str(fyf) + ") centro (" + str(x1) + ", " + str(y1) + ")")
+        print("Coordenadas Segundo: (" + str(sxi) + ', ' + str(
+            syi) + ") a (" + str(sxf) + ', ' + str(syf) + ") centro (" + str(x2) + ", " + str(y2) + ")")
+
+        print("Distância Euclidiana: " + distance_euclidean((x1, y1), (x2, y2)))
+        print("Distância Quadro: " + distance_four((x1, y1), (x2, y2)))
+        print("Distância Oito: " + distance_eight((x1, y1), (x2, y2)))
 
 
 # Clustering image a.bmp
@@ -366,6 +358,73 @@ cluster_image('e')
 \end{lstlisting}
 
 \subsection{Explicação}
-O algoritmo de rotulagem utilizado foi "Hoshen-Kopelman", para a implementação foi utilizando a linguagem de programação Python e o pacote `"Pillow”, foi definido o numero de linhas e colunas são 256 e que a rotulagem é realizada através das cores, foi definida 4 funções: {\ttfamily find(labels, x):} , {\ttfamily union(labels, x, y):}, {\ttfamily cluster\textunderscore image(labels, label, name):}, {\ttfamily main(name): }. A função {\ttfamily main(name):} , recebe como parâmetro o nome da imagem que foi criada no exercício anterior, assim é executada 6 vezes uma para cada imagem.
+
+\begin{flushleft}
+A implementação do algortimo para clursterização tem como base o algoritmo de rotulagem "Hoshen-Kopelman", adaptado para utilizar vizinhaça 8 e agrupar pela quantização de cinza, a linguagem de programação é Python juntamente com o pacote "Pillow".
+\end{flushleft}
+
+\begin{flushleft}
+Definido o número de linhas e colunas (256x256) vindo das imagens e um vetor com as possíveis cores a rotulagem.
+\end{flushleft}
+
+\begin{flushleft}
+Três funções para calcular a distância foram implementadas:
+\end{flushleft}
+
+\begin{itemize}
+    \item {\ttfamily distance\textunderscore euclidean(first, second)};
+    \item {\ttfamily distance\textunderscore four(first, second)};
+    \item {\ttfamily distance\textunderscore eight(first, second)}.
+\end{itemize}
+
+\begin{flushleft}
+A função {\ttfamily cluster\textunderscore image(name)} realiza a rotulagem através de cores e quando executada utiliza as funções:
+\end{flushleft}
+
+\begin{itemize}
+   \item {\ttfamily find(labels, x)};
+   \item {\ttfamily union(labels, x, y)}.
+ \end{itemize}
+
+\begin{flushleft}
+A imagem clursterizada é salva na pasta images com o nome da imagem original + "\textunderscore clustered.bmp", após a imagem ser salva é exibido nome da imagem original, quantidade de grupos e rótulos dos grupos. 
+\end{flushleft}
+
+\begin{flushleft}
+Se a imagem a ser clursterizada for a imagem "e.bmp" é calculada as distância euclidiana, distância quatro (\textit{city-block}) e distância oito (\textit{chessboard}) de dois aglomerados conexos, selecionados aleatoriamente e verificados pela função {\ttfamily is\textunderscore connected(first, second)}
+\end{flushleft}
+
+\begin{flushleft}
+A função {\ttfamily cluster\textunderscore image} é executada 6 vezes uma para cada imagem gerada no exercício anterior.
+\end{flushleft}
+
+\begin{lstlisting}[language=Bash]
+==========================
+Nome: a
+Quantidade de grupos: 1
+Rotulos dos grupos: 1
+==========================
+Nome: b
+Quantidade de grupos: 2
+Rotulos dos grupos: 1, 2
+==========================
+Nome: c
+Quantidade de grupos: 6
+Rotulos dos grupos: 1, 2, 3, 4, 5, 6
+==========================
+Nome: d
+Quantidade de grupos: 3
+Rotulos dos grupos: 1, 2, 3
+==========================
+Nome: e
+Quantidade de grupos: 16
+Rotulos dos grupos: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16
+
+Coordenadas Primeiro: (128, 192) a (191, 255) centro (160.0, 224.0)
+Coordenadas Segundo: (192, 64) a (255, 127) centro (224.0, 96.0)
+Distancia Euclidiana: 143.10835055998655
+Distancia Quadro: 192.0
+Distancia Oito: 128.0
+\end{lstlisting}
 
 \end{document}

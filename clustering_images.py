@@ -29,37 +29,22 @@ cluster_colors = [
 
 
 def distance_euclidean(first, second):
-    fxi, fyi, fxf, fyf = first
-    sxi, syi, sxf, syf = second
-
-    x1 = (fxf - fxi) / 2
-    y1 = (fyf - fyi) / 2
-    x2 = (sxi - sxf) / 2
-    y2 = (syi - syf) / 2 
+    (x1, y1) = first
+    (x2, y2) = second
 
     return str(math.sqrt(pow(x2 - x1, 2) + pow(y2 - y1, 2)))
 
 
 def distance_four(first, second):
-    fxi, fyi, fxf, fyf = first
-    sxi, syi, sxf, syf = second
-
-    x1 = (fxf - fxi) / 2
-    y1 = (fyf - fyi) / 2
-    x2 = (sxi - sxf) / 2
-    y2 = (syi - syf) / 2
+    (x1, y1) = first
+    (x2, y2) = second
 
     return str(abs(x1 - x2) + abs(y1 - y2))
 
 
 def distance_eight(first, second):
-    fxi, fyi, fxf, fyf = first
-    sxi, syi, sxf, syf = second
-
-    x1 = (fxf - fxi) / 2
-    y1 = (fyf - fyi) / 2
-    x2 = (sxi - sxf) / 2
-    y2 = (syi - syf) / 2
+    (x1, y1) = first
+    (x2, y2) = second
 
     return str(max(abs(x1 - x2), abs(y1 - y2)))
 
@@ -187,14 +172,22 @@ def cluster_image(name):
             code_connected = random.randrange(0, len(total_labels) - 1)
             second = positions_labels[code_connected]
 
-        print("\nCoordenadas Primeiro: (" + str(first[0]) + ', ' + str(
-            first[2]) + ") a (" + str(first[1]) + ', ' + str(first[3]) + ")")
-        print("Coordenadas Segundo: (" + str(second[0]) + ', ' + str(
-            second[2]) + ") a (" + str(second[1]) + ', ' + str(second[3]) + ")")
+        fxi, fyi, fxf, fyf = first
+        sxi, syi, sxf, syf = second
 
-        print("Distância Euclidiana: " + distance_euclidean(first, second))
-        print("Distância Quadro: " + distance_four(first, second))
-        print("Distância Oito: " + distance_eight(first, second))
+        x1 = (fxf - fxi + 1) / 2 + fxi
+        y1 = (fyf - fyi + 1) / 2 + fyi
+        x2 = (sxf - sxi + 1) / 2 + sxi
+        y2 = (syf - syi + 1) / 2 + syi
+
+        print("\nCoordenadas Primeiro: (" + str(fxi) + ', ' + str(
+            fyi) + ") a (" + str(fxf) + ', ' + str(fyf) + ") centro (" + str(x1) + ", " + str(y1) + ")")
+        print("Coordenadas Segundo: (" + str(sxi) + ', ' + str(
+            syi) + ") a (" + str(sxf) + ', ' + str(syf) + ") centro (" + str(x2) + ", " + str(y2) + ")")
+
+        print("Distância Euclidiana: " + distance_euclidean((x1, y1), (x2, y2)))
+        print("Distância Quadro: " + distance_four((x1, y1), (x2, y2)))
+        print("Distância Oito: " + distance_eight((x1, y1), (x2, y2)))
 
 
 # Clustering image a.bmp
