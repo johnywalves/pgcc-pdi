@@ -5,10 +5,8 @@
 # Install package `pip3 install pillow`
 from PIL import Image
 
-# Define function to create image
 
-
-def create_images(name, quantization):
+def create_images(name, quantization):  # Define function to create image
     # Create a new black image with 256x256
     # Mode - P (8-bit pixels, mapped to any other mode using a color palette)
     img = Image.new('P', (256, 256))

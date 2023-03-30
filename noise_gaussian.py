@@ -1,10 +1,12 @@
+# Install package `pip3 install pillow`
 from PIL import Image
-
+# The fundamental package for scientific computing with Python
 import numpy as np
+# Matplotlib: Visualization with Python
+import matplotlib.pyplot as plt
 
-
-# define Jaccard Similarity function
-def jaccard(act, pred):
+# Define Jaccard Similarity function
+def jaccard(act, pred):  
     intersection = len(list(set(act).intersection(pred)))
     union = (len(act) + len(pred)) - intersection
     return float(intersection) / union
@@ -33,7 +35,7 @@ def mean_absolute_error(act, pred):
 def add_gaussian_noise(name):
     # Load original image
     original_img = Image.open("./images/e.bmp")
-    # Image shape
+    # Image original shape
     width, height = original_img.size
 
     # Create noise gaussian to reference
@@ -41,7 +43,7 @@ def add_gaussian_noise(name):
     # Create noise gaussian to original image
     noised_img = Image.new('P', (width, height))
 
-    # Mean Noise
+    # Mean of distribution
     mean = 0
     # Standard Distribution
     # The range of 1-15 is considered low.
@@ -71,6 +73,7 @@ def add_gaussian_noise(name):
     noised_img.save('./images/' + name + '_noise_gaussian.bmp')
 
     act = np.ndarray.flatten(np.asarray(original_img))
+    gaus = np.ndarray.flatten(np.asarray(gaussian_img))
     pred = np.ndarray.flatten(np.asarray(noised_img))
 
     print("Erro máximo " + str(max_error(act, pred)))
@@ -79,6 +82,29 @@ def add_gaussian_noise(name):
     print("Raiz do erro médio quadrático " + str(0)),
     print("Erro médio quadrático normalizado " + str(0))
     print("Coeficiente de Jaccard " + str(jaccard(act, pred)))
+
+    # Histogram original image
+    plt.hist(act, bins=255)
+    plt.ylabel('Contagem')
+    plt.xlabel('Profundidade')
+    plt.title("Histograma imagem original")
+    plt.savefig('./images/' + name + '_histogram.jpg')
+
+    # Histogram gaussian noise
+    plt.clf()
+    plt.hist(gaus, bins=255)
+    plt.ylabel('Contagem')
+    plt.xlabel('Profundidade')
+    plt.title("Histograma ruído gaussiano")
+    plt.savefig('./images/noise_histogram.jpg')
+
+    # Histogram noised image
+    plt.clf()
+    plt.hist(pred, bins=255)
+    plt.ylabel('Contagem')
+    plt.xlabel('Profundidade')
+    plt.title("Histograma imagem ruidosa")
+    plt.savefig('./images/e_noised_histogram.jpg')
 
 
 add_gaussian_noise('e')

@@ -1,1 +1,2 @@
-*.bmp
+images/*.bmp
+images/*.jpg
