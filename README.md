@@ -11,5 +11,5 @@ Preparar o ambiente Python
 Instalar as bibliotecas utilizadas
 
 ```bash
-pip3 install pillow
+pip3 install pillow matplotlib
 ```

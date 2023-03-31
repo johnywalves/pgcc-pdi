@@ -5,31 +5,40 @@ import numpy as np
 # Matplotlib: Visualization with Python
 import matplotlib.pyplot as plt
 
-# Define Jaccard Similarity function
-def jaccard(act, pred):  
-    intersection = len(list(set(act).intersection(pred)))
-    union = (len(act) + len(pred)) - intersection
+
+def jaccard(original, noised):  # Define Jaccard Similarity function
+    intersection = len(list(set(original).intersection(noised)))
+    union = (len(original) + len(noised)) - intersection
     return float(intersection) / union
 
 
-def max_error(act, pred):
-    diff = pred - act
+def max_error(original, noised):
+    diff = noised - original
     return max(diff)
 
 
-def root_mean_squared_error(act, pred):
-    diff = pred - act
+def root_mean_squared_error(original, noised):
+    diff = noised - original
     differences_squared = diff ** 2
     mean_diff = differences_squared.mean()
     rmse_val = np.sqrt(mean_diff)
     return rmse_val
 
 
-def mean_absolute_error(act, pred):
-    diff = pred - act
+def mean_absolute_error(original, noised):
+    diff = noised - original
     abs_diff = np.absolute(diff)
     mean_diff = abs_diff.mean()
     return mean_diff
+
+
+def create_figure(depths, label, file):
+    plt.clf()
+    plt.hist(depths, bins=255)
+    plt.ylabel('Contagem')
+    plt.xlabel('Profundidade')
+    plt.title(label)
+    plt.savefig('./images/' + file + '.jpg')
 
 
 def add_gaussian_noise(name):
@@ -63,8 +72,8 @@ def add_gaussian_noise(name):
     noised_pixels = noised_img.load()
 
     # For every pixel:
-    for i in range(original_img.size[0]):
-        for j in range(original_img.size[1]):
+    for i in range(width):
+        for j in range(height):
             # Set the colour accordingly
             gaussian_pixels[i, j] = int(128 + gaussian[i][j])
             noised_pixels[i, j] = int(original_pixels[i, j] + gaussian[i][j])
@@ -72,39 +81,31 @@ def add_gaussian_noise(name):
     gaussian_img.save('./images/noise_gaussian.bmp')
     noised_img.save('./images/' + name + '_noise_gaussian.bmp')
 
-    act = np.ndarray.flatten(np.asarray(original_img))
-    gaus = np.ndarray.flatten(np.asarray(gaussian_img))
-    pred = np.ndarray.flatten(np.asarray(noised_img))
+    # Flatten the depths of gray
+    original_depths = np.ndarray.flatten(np.asarray(original_img))
+    gaussian_depths = np.ndarray.flatten(np.asarray(gaussian_img))
+    noised_depths = np.ndarray.flatten(np.asarray(noised_img))
 
-    print("Erro máximo " + str(max_error(act, pred)))
-    print("Erro médio absoluto " + str(mean_absolute_error(act, pred)))
-    print("Erro médio quadrático " + str(root_mean_squared_error(act, pred)))
+    # Display error indicators
+    print("Erro máximo " + str(max_error(original_depths, noised_depths)))
+    print("Erro médio absoluto " +
+          str(mean_absolute_error(original_depths, noised_depths)))
+    print("Erro médio quadrático " +
+          str(root_mean_squared_error(original_depths, noised_depths)))
     print("Raiz do erro médio quadrático " + str(0)),
     print("Erro médio quadrático normalizado " + str(0))
-    print("Coeficiente de Jaccard " + str(jaccard(act, pred)))
+    print("Coeficiente de Jaccard " +
+          str(jaccard(original_depths, noised_depths)))
 
     # Histogram original image
-    plt.hist(act, bins=255)
-    plt.ylabel('Contagem')
-    plt.xlabel('Profundidade')
-    plt.title("Histograma imagem original")
-    plt.savefig('./images/' + name + '_histogram.jpg')
-
+    create_figure(original_depths, "Histograma imagem original",
+                  name + "_histogram")
     # Histogram gaussian noise
-    plt.clf()
-    plt.hist(gaus, bins=255)
-    plt.ylabel('Contagem')
-    plt.xlabel('Profundidade')
-    plt.title("Histograma ruído gaussiano")
-    plt.savefig('./images/noise_histogram.jpg')
-
+    create_figure(gaussian_depths, "Histograma ruído gaussiano",
+                  "noise_histogram")
     # Histogram noised image
-    plt.clf()
-    plt.hist(pred, bins=255)
-    plt.ylabel('Contagem')
-    plt.xlabel('Profundidade')
-    plt.title("Histograma imagem ruidosa")
-    plt.savefig('./images/e_noised_histogram.jpg')
+    create_figure(noised_depths, "Histograma imagem ruidosa",
+                  "e_noised_histogram")
 
 
 add_gaussian_noise('e')
