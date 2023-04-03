@@ -11,5 +11,7 @@ Preparar o ambiente Python
 Instalar as bibliotecas utilizadas
 
 ```bash
-pip3 install pillow matplotlib
+pip install pillow matplotlib scikit-learn
+# or
+pip3 install pillow matplotlib scikit-learn
 ```
