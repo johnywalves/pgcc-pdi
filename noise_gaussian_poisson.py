@@ -1,3 +1,4 @@
+from PIL import Image
 import numpy as np
 import matplotlib.pyplot as plt
 
@@ -16,6 +17,14 @@ B_gauss = np.random.normal(mean, np.sqrt(variance), size=(5, 5)).astype(int)
 print("Imagem B (Gaussiano):")
 print(B_gauss)
 
+# Geração da imagem de Poisson
+img_poison = Image.new('P', (5, 5))
+pixels = img_poison.load()
+for i in range(img_poison.size[0]):
+    for j in range(img_poison.size[1]):
+        pixels[i, j] = (int(128 + B_gauss[i][j]))
+img_poison.save('./images/pz_gauss.bmp')
+
 # Degradando a imagem A com o ruído de Gaussiano
 A_gauss = np.clip(A + B_gauss, 0, 255).astype(int)
 print("Imagem A degradada (Gaussiano):")
@@ -27,7 +36,7 @@ plt.hist(A_gauss.flatten(), bins=256, range=(-255, 255), density=True)
 plt.title("Função p(z) do ruído de Gaussiano")
 plt.xlabel("Intensidade de pixel")
 plt.ylabel("Probabilidade")
-plt.savefig('./images/pz_gaussian.jpg')
+plt.savefig('./images/pz_gaussian_noised.jpg')
 
 # Plotando o histograma de B para mostrar a caracterstica do rudo de Gaussiano
 plt.clf()
@@ -46,6 +55,14 @@ B_poisson = np.random.poisson(lam=lam, size=(5, 5)).astype(int)
 print("Imagem B (Poisson):")
 print(B_poisson)
 
+# Geração da imagem de Poisson
+img_poison = Image.new('P', (5, 5))
+pixels = img_poison.load()
+for i in range(img_poison.size[0]):
+    for j in range(img_poison.size[1]):
+        pixels[i, j] = (int(128 + B_poisson[i][j]))
+img_poison.save('./images/pz_poisson.bmp')
+
 # Degradando a imagem A com o ruído de Poisson
 A_poisson = np.clip(A + B_poisson, 0, 255).astype(int)
 print("Imagem A degradada (Poisson):")
@@ -57,7 +74,7 @@ plt.hist(A_poisson.flatten(), bins=256, range=(-255, 255), density=True)
 plt.title("Função p(z) do ruído de Poisson")
 plt.xlabel("Intensidade de pixel")
 plt.ylabel("Probabilidade")
-plt.savefig('./images/pz_poisson.jpg')
+plt.savefig('./images/pz_poisson_noised.jpg')
 
 # Plotando o histograma de B para mostrar a caracterstica do ruido de Poisson
 plt.clf()
