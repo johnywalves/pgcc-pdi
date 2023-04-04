@@ -1,8 +1,15 @@
 # Install package `pip3 install pillow`
 from PIL import Image
 
+import os
 import random
 import math
+
+file_out = open(os.path.basename(__file__).split('.')[0] + '.txt', "w")
+
+def print_out(text):
+    file_out.write(text + '\n')
+    print(text)
 
 n_columns = 256
 n_rows = 256
@@ -156,10 +163,10 @@ def cluster_image(name):
 
     img_clustered.save('./images/' + name + '_clustered.bmp')
 
-    print('==========================')
-    print('Nome: ' + name)
-    print('Quantidade de grupos: ' + str(len(total_labels)))
-    print('Rótulos dos grupos: ' + ", ".join([str(i) for i in total_labels]))
+    print_out('==========================')
+    print_out('Nome: ' + name)
+    print_out('Quantidade de grupos: ' + str(len(total_labels)))
+    print_out('Rótulos dos grupos: ' + ", ".join([str(i) for i in total_labels]))
 
     if name == 'e':
         code_ref = random.randrange(0, len(total_labels) - 1)
@@ -180,14 +187,14 @@ def cluster_image(name):
         x2 = (sxf - sxi + 1) / 2 + sxi
         y2 = (syf - syi + 1) / 2 + syi
 
-        print("\nCoordenadas Primeiro: (" + str(fxi) + ', ' + str(
+        print_out("\nCoordenadas Primeiro: (" + str(fxi) + ', ' + str(
             fyi) + ") a (" + str(fxf) + ', ' + str(fyf) + ") centro (" + str(x1) + ", " + str(y1) + ")")
-        print("Coordenadas Segundo: (" + str(sxi) + ', ' + str(
+        print_out("Coordenadas Segundo: (" + str(sxi) + ', ' + str(
             syi) + ") a (" + str(sxf) + ', ' + str(syf) + ") centro (" + str(x2) + ", " + str(y2) + ")")
 
-        print("Distância Euclidiana: " + distance_euclidean((x1, y1), (x2, y2)))
-        print("Distância Quadro: " + distance_four((x1, y1), (x2, y2)))
-        print("Distância Oito: " + distance_eight((x1, y1), (x2, y2)))
+        print_out("Distância Euclidiana: " + distance_euclidean((x1, y1), (x2, y2)))
+        print_out("Distância Quadro: " + distance_four((x1, y1), (x2, y2)))
+        print_out("Distância Oito: " + distance_eight((x1, y1), (x2, y2)))
 
 
 # Clustering image a.bmp

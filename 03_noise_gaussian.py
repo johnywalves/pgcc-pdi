@@ -6,6 +6,16 @@ import numpy as np
 import matplotlib.pyplot as plt
 # Importação de métricas sobre predição
 from sklearn.metrics import max_error, jaccard_score,  mean_absolute_error, mean_squared_error
+# Importação da biblioteca própria
+import library
+import os
+
+file_out = open(os.path.basename(__file__).split('.')[0] + '.txt', "w")
+
+
+def print_out(text):
+    file_out.write(text + '\n')
+    print(text)
 
 
 def normalized_root_mean_square_error(original, noised):
@@ -16,15 +26,6 @@ def normalized_root_mean_square_error(original, noised):
     nrmse = round(nrmse, 3)
 
     return (nrmse)
-
-
-def create_figure(depths, label, file):
-    plt.clf()
-    plt.hist(depths, bins=255)
-    plt.ylabel('Contagem')
-    plt.xlabel('Profundidade')
-    plt.title(label)
-    plt.savefig('./images/' + file + '.jpg')
 
 
 def add_gaussian_noise(name, sd):
@@ -63,7 +64,7 @@ def add_gaussian_noise(name, sd):
     noised_img.save('./images/' + name + '_noise_gaussian.bmp')
 
     # Display Standard Distribution
-    print("Desvio padrão " + str(sd))
+    print_out("Desvio padrão " + str(sd))
 
     # Flatten the depths of gray
     original_depths = np.ndarray.flatten(np.asarray(original_img))
@@ -71,40 +72,39 @@ def add_gaussian_noise(name, sd):
     noised_depths = np.ndarray.flatten(np.asarray(noised_img))
 
     # Display error indicators
-    print("Erro máximo " + str(max_error(original_depths, noised_depths)))
-    print("Erro médio absoluto " +
+    print_out("Erro máximo " + str(max_error(original_depths, noised_depths)))
+    print_out("Erro médio absoluto " +
           str(mean_absolute_error(original_depths, noised_depths)))
-    print("Erro médio quadrático " +
+    print_out("Erro médio quadrático " +
           str(mean_squared_error(original_depths, noised_depths)))
-    print("Raiz do erro médio quadrático " +
+    print_out("Raiz do erro médio quadrático " +
           str(mean_squared_error(original_depths, noised_depths, squared=False))),
-    print("Erro médio quadrático normalizado " +
+    print_out("Erro médio quadrático normalizado " +
           str(normalized_root_mean_square_error(original_depths, noised_depths)))
-    print("Coeficiente de Jaccard " +
+    print_out("Coeficiente de Jaccard " +
           str(jaccard_score(original_depths, noised_depths, average="micro")))
 
     # Histogram original image
-    create_figure(original_depths, "Histograma imagem original",
-                  name + "_histogram")
+    library.plotar_histograma_cinzas(original_depths, "Histograma imagem original",
+                                     './images/e_histogram.jpg')
     # Histogram gaussian noise
-    create_figure(gaussian_depths, "Histograma ruído gaussiano",
-                  "noise_histogram")
+    library.plotar_histograma_cinzas(gaussian_depths, "Histograma ruído gaussiano",
+                                     './images/noise_histogram.jpg')
     # Histogram noised image
-    create_figure(noised_depths, "Histograma imagem ruidosa",
-                  "e_noised_histogram")
+    library.plotar_histograma_cinzas(noised_depths, "Histograma imagem ruidosa",
+                                     './images/e_noised_histogram.jpg')
 
 
 # Standard Distribution
 # The range of 1-15 is considered low.
 # The range 15-30 is considered medium.
 # The range 30-50 (Even above) is considered high.
-
 add_gaussian_noise('e', 0)
-print('')
+print_out('')
 add_gaussian_noise('e', 5)
-print('')
+print_out('')
 add_gaussian_noise('e', 10)
-print('')
+print_out('')
 add_gaussian_noise('e', 20)
-print('')
+print_out('')
 add_gaussian_noise('e', 30)

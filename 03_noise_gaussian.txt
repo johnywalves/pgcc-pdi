@@ -1,0 +1,39 @@
+Desvio padrão 0
+Erro máximo 0
+Erro médio absoluto 0.0
+Erro médio quadrático 0.0
+Raiz do erro médio quadrático 0.0
+Erro médio quadrático normalizado 0.031
+Coeficiente de Jaccard 1.0
+
+Desvio padrão 5
+Erro máximo 255
+Erro médio absoluto 107.35783386230469
+Erro médio quadrático 19.919570922851562
+Raiz do erro médio quadrático 4.463134652108489
+Erro médio quadrático normalizado 0.221
+Coeficiente de Jaccard 0.10080709504572978
+
+Desvio padrão 10
+Erro máximo 255
+Erro médio absoluto 118.33868408203125
+Erro médio quadrático 54.43914794921875
+Raiz do erro médio quadrático 7.37828895809989
+Erro médio quadrático normalizado 0.23
+Coeficiente de Jaccard 0.0564443978753758
+
+Desvio padrão 20
+Erro máximo 255
+Erro médio absoluto 121.7178955078125
+Erro médio quadrático 82.9127197265625
+Raiz do erro médio quadrático 9.10564219188095
+Erro médio quadrático normalizado 0.237
+Coeficiente de Jaccard 0.03557743207262442
+
+Desvio padrão 30
+Erro máximo 255
+Erro médio absoluto 122.09939575195312
+Erro médio quadrático 94.19622802734375
+Raiz do erro médio quadrático 9.705474126870039
+Erro médio quadrático normalizado 0.239
+Coeficiente de Jaccard 0.030181086519114688
