@@ -10,19 +10,19 @@ def equalizacao_histograma(nome_imagem):
     original_img = Image.open("./images_original/05/" + nome_imagem + ".jpg")
     original_depths = np.asarray(original_img)
 
-    # Flatten image array and calculate histogram via binning
+    # Achatar a matriz de imagens e calcular o histograma 
     histogram = np.bincount(original_depths.flatten(), minlength=256)
-    # Normalize
+    # Normalizar
     histogram = histogram / np.sum(histogram)
-    # Normalized cumulative histogram
+    # Normalizado fazer a soma acumulada do histograma
     count_histogram = np.cumsum(histogram)
-    # Pixel mapping lookup table
+    # Tabela de pesquisa de mapeamento de pixels
     transform_map = np.floor(255 * count_histogram).astype(np.uint8)
-    # Flatten image array
+    # Achatar matriz de imagens
     image_list = list(original_depths.flatten())
-    # Transform pixel values to equalize
+    # Transformar valores de pixel para equalizar
     eq_img_list = [transform_map[p] for p in image_list]
-    # Reshape and write back into img_array
+    # Reformular voltar para eq_img_array
     eq_img_array = np.reshape(np.asarray(eq_img_list), original_depths.shape)
 
     # Geração da imagem de Equalizada

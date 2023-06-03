@@ -429,9 +429,12 @@ Para construir um programa em Python que realize a equalização de histograma e
 \end{flushleft}
 
 \begin{lstlisting}[language=Python]      
-import cv2
+# Importação da biblioteca de tratamento de imagens
+from PIL import Image
+# The fundamental package for scientific computing with Python
 import numpy as np
-import matplotlib.pyplot as plt
+# Importação da biblioteca própria
+import library
 \end{lstlisting}
 
 \begin{flushleft}
@@ -439,8 +442,8 @@ import matplotlib.pyplot as plt
 \end{flushleft}
 
 \begin{lstlisting}[language=Python]       
-# Carrega a imagem
-img = cv2.imread('imagens/frutas.jpg', 0)
+# Carregar a imagem
+original_img = Image.open("./images_original/05/" + nome_imagem + ".jpg")
 \end{lstlisting}
 
 \begin{flushleft}
@@ -448,78 +451,37 @@ img = cv2.imread('imagens/frutas.jpg', 0)
 \end{flushleft}
 
 \begin{lstlisting}[language=Python]    
-# Realiza a equalização de histograma
-equalized_img = cv2.equalizeHist(img)
+# Normalizar
+histogram = histogram / np.sum(histogram)
+# Normalizado fazer a soma acumulada do histograma
+count_histogram = np.cumsum(histogram)
+# Tabela de pesquisa de mapeamento de pixels
+transform_map = np.floor(255 * count_histogram).astype(np.uint8)
 \end{lstlisting}
 
 \begin{flushleft}
-4. Exibir a imagem original , bem como seus respectivo histograma.
+4. Gerar o gráfico com as imagens:
 \end{flushleft}
-
-\begin{lstlisting}[language=Python]        
-# Mostra as imagens original lado a lado
-plt.subplot(2, 2, 1)
-plt.imshow(img, cmap='gray')
-plt.title('Imagem original')
-plt.subplot(2, 2, 2)
-plt.imshow(equalized_img, cmap='gray')
-plt.title('Imagem equalizada')
-\end{lstlisting}
-
 \begin{flushleft}
-5. Exibir a  imagem equalizada, bem como seus respectivo histograma.
+4.1 Exibir a imagem original , bem como seus respectivo histograma.
+\end{flushleft}
+\begin{flushleft}
+4.2 Exibir a  imagem equalizada, bem como seus respectivo histograma
 \end{flushleft}
 
 \begin{lstlisting}[language=Python]
-# Mostra as imagens original e equalizada lado a lado
-plt.subplot(2, 2, 3)
-plt.hist(img.ravel(), 256, [0, 256])
-plt.title('Histograma da imagem original')
-plt.subplot(2, 2, 4)
-plt.hist(equalized_img.ravel(), 256, [0, 256])
-plt.title('Histograma da imagem equalizada')
-\end{lstlisting}
-
-\begin{flushleft}
-6. Exibe as imagens.
-\end{flushleft}
-
-\begin{lstlisting}[language=Python]
-plt.show()
-\end{lstlisting}
-
-\begin{flushleft}
-O código em Python para realizar essas etapas pode ser o seguinte:
-\end{flushleft}
-
-\begin{lstlisting}[language=Python]
-import cv2
-import numpy as np
-import matplotlib.pyplot as plt
-
-# Carrega a imagem
-img = cv2.imread('imagens/frutas.jpg', 0)
-
-# Realiza a equalização de histograma
-equalized_img = cv2.equalizeHist(img)
-
-# Mostra as imagens original e equalizada lado a lado
-plt.subplot(2, 2, 1)
-plt.imshow(img, cmap='gray')
-plt.title('Imagem original')
-plt.subplot(2, 2, 2)
-plt.imshow(equalized_img, cmap='gray')
-plt.title('Imagem equalizada')
-
-# Mostra os histogramas das imagens original e equalizada
-plt.subplot(2, 2, 3)
-plt.hist(img.ravel(), 256, [0, 256])
-plt.title('Histograma da imagem original')
-plt.subplot(2, 2, 4)
-plt.hist(equalized_img.ravel(), 256, [0, 256])
-plt.title('Histograma da imagem equalizada')
-
-plt.show()
+# Plotar a comparação original e equalizada com os histogramas
+library.plotar_comparacao_histograma(
+        original_img, 
+        equalized_img,
+        [
+            "Imagem original",
+            "Imagem equalizada",
+            "Histograma da imagem original",
+            "Histograma da imagem equalizada"
+        ],
+        "./images_generate/05/equalize_" + nome_imagem + ".jpg"
+    )
 \end{lstlisting}
 
 \begin{flushleft}
@@ -560,13 +522,16 @@ Considere a imagem (e) com ruído gaussiano, exercício 3 da Aula 4, e aplique a
 \subsection{Explicação}
 
 \begin{flushleft}
-1. Novamente foi necessário a biblioteca OpenCV:
+1. Foi utilizado a biblioteca OpenCV:
 \end{flushleft}
 
 \begin{lstlisting}[language=Python]
+# Importação da OpenCV2 (Computer Vision)
 import cv2
+# The fundamental package for scientific computing with Python
 import numpy as np
-import os
+# Importação da biblioteca própria
+import library
 \end{lstlisting}
 
 \begin{flushleft}
@@ -574,7 +539,7 @@ import os
 \end{flushleft}
 
 \begin{lstlisting}[language=Python]
-img = cv2.imread("./images/e_noise_gaussian.bmp")
+img = cv2.imread("./images_original/e_noise_gaussian.bmp")
 \end{lstlisting}
 
 \begin{flushleft}
@@ -594,7 +559,7 @@ for y in y_values:
 
 \begin{lstlisting}[language=Python]
 # Salva a imagem corrigida
-cv2.imwrite(f"./images/imagem_corrigida_y={y}.jpg", corrected_img)   
+cv2.imwrite(f"./images_generate/06/imagem_corrigida_y={y}.jpg", corrected_img)  
 \end{lstlisting}
 
 \begin{flushleft}
@@ -680,15 +645,15 @@ Aplique sobre a imagem (e) os ruídos aditivos: sal e pimenta e gaussiano. As di
 
 \begin{figure}[H]
     \centering
-    \subfloat[\centering a]{{\includegraphics[width=2cm]{images_original/a.jpg}}}%
+    \subfloat[\centering a]{{\includegraphics[width=2cm]{images_generate/01/a.jpg}}}%
     \qquad
-    \subfloat[\centering b]{{\includegraphics[width=2cm]{images_original/b.jpg}}}%
+    \subfloat[\centering b]{{\includegraphics[width=2cm]{images_generate/01/b.jpg}}}%
     \qquad
-    \subfloat[\centering ]{{\includegraphics[width=2cm]{images_original/c.jpg}}}%
+    \subfloat[\centering ]{{\includegraphics[width=2cm]{images_generate/01/c.jpg}}}%
     \qquad
-    \subfloat[\centering d]{{\includegraphics[width=2cm]{images_original/d.jpg}}}%
+    \subfloat[\centering d]{{\includegraphics[width=2cm]{images_generate/01/d.jpg}}}%
     \qquad
-    \subfloat[\centering e]{{\includegraphics[width=2cm]{images_original/e.jpg}}}%
+    \subfloat[\centering e]{{\includegraphics[width=2cm]{images_generate/01/e.jpg}}}%
 \end{figure}
 
 \begin{flushleft}
@@ -1087,11 +1052,11 @@ Construa um programa que receba a imagem A, forneça uma imagem limiarizada pare
 
 \begin{figure}[H]
     \centering
-    \subfloat[\centering Entrada ]{{\includegraphics[width=4cm]{images_generate/12/Img4.jpg}}}%
+    \subfloat[\centering Entrada ]{{\includegraphics[width=4cm]{images_original/12/Img4a.jpg}}}%
     \qquad
-    \subfloat[\centering Limiarização]{{\includegraphics[width=4cm]{images_generate/12/MM - b.jpg}}}%
+    \subfloat[\centering Limiarização]{{\includegraphics[width=4cm]{images_original/12/Img4b.jpg}}}%
     \qquad
-    \subfloat[\centering Morfológica]{{\includegraphics[width=4cm]{images_generate/12/MM - c.jpg}}}%
+    \subfloat[\centering Morfológica]{{\includegraphics[width=4cm]{images_original/12/Img4c.jpg}}}%
     \qquad
 \end{figure}
 
@@ -1102,7 +1067,7 @@ Construa um programa que receba a imagem A, forneça uma imagem limiarizada pare
 \subsection{Explicação}
 
 \begin{flushleft}
-Geramos a imagem limiarizada usando T igual 220 na função {\ttfamily limiarizacao (entrada, saida):} que recebe como entrada a imagem de entrada img4.bmp e após salva a imagem limiarizada de saída como o nome imgB.bmp quando é executada {\ttfamily limiarizacao ("img4.bmp", "imgB.bmp"):} 
+Geramos a imagem limiarizada usando T igual 220 na função {\ttfamily limiarizacao (entrada, saida):} que recebe como entrada a imagem de entrada img4.bmp e após salva a imagem limiarizada de saída como o nome imgB.bmp quando é executada {\ttfamily limiarizacao ("Img4", "imgB"):} 
 \end{flushleft}
 
 \begin{flushleft}
@@ -1111,12 +1076,12 @@ Assim a imagem gerada é a imgB.bmp.
 
 \begin{figure}[H]
     \centering
-    \includegraphics{images_generate/12/imgB.jpg}
+    \includegraphics[scale=0.8]{images_generate/12/imgB.jpg}
     \caption{imgB.bmp}
 \end{figure}
 
 \begin{flushleft}
-A partir da imagem limiarizada aplicamos o elemento estruturante MORPH\textunderscore ELLIPSE com tamnaho (3,3) e aplicamos 4 iterações aplicando como morfologia matemática a transformação morfológica de erosão através da funcao {\ttfamily operacao\textunderscore morfologica (entrada, saida): } que recebe a imagem limiarizada como entrada com o nome imgb.bmp e a imagem de saída é gerada e salva como o nome eroded\textunderscore imgB.bmp quando é executada {\ttfamily operacao\undercose morfologica("imgB.bmp","eroded\textunderscore imgB.bmp")}
+A partir da imagem limiarizada aplicamos o elemento estruturante MORPH\textunderscore ELLIPSE com tamnaho (3,3) e aplicamos 4 iterações aplicando como morfologia matemática a transformação morfológica de erosão através da funcao {\ttfamily operacao\textunderscore morfologica (entrada, saida): } que recebe a imagem limiarizada como entrada com o nome imgb.bmp e a imagem de saída é gerada e salva como o nome eroded\textunderscore imgB.bmp quando é executada {\ttfamily operacao\textunderscore morfologica("imgB","eroded\textunderscore imgB")}
 \end{flushleft}
 
 \begin{flushleft}
@@ -1125,8 +1090,8 @@ Assim a imagem gerada é a eroded\textunderscore imgB.bmp.
 
 \begin{figure}[H]
     \centering
-    \includegraphics{images_generate/12/eroded_imgB.jpg}
-    \caption{eroded\textundercose imgB.jpg}
+    \includegraphics[scale=0.8]{images_generate/12/eroded_imgB.jpg}
+    \caption{eroded\textunderscore imgB.jpg}
 \end{figure}
 
 \pagebreak
@@ -1140,7 +1105,7 @@ Construa um código para receber imagens monocromáticas como entrada, 8 bits de
 \end{flushleft}
 
 \begin{flushleft}
-- Haralick, com segundo momento angular, entropia e contraste. Use d=1 e \theta=0;
+- Haralick, com segundo momento angular, entropia e contraste. Use d=1 e $\theta=0$;
 \end{flushleft}
 
 \begin{flushleft}
@@ -1165,7 +1130,7 @@ Em seguida, observe os resultados numéricos e indique quais descritores apresen
 
 \subsection{Código Fonte}
 
-\subsubsection{Haralick, com segundo momento angular, entropia e contraste. Use d=1 e \theta=0}
+\subsubsection{Haralick, com segundo momento angular, entropia e contraste. Use d=1 e $\theta=0$}
 
 \lstinputlisting[language=Python]{sources/13_texture_a.py}
 
@@ -1179,7 +1144,7 @@ Em seguida, observe os resultados numéricos e indique quais descritores apresen
 
 \subsection{Explicação}
 
-\subsubsection{Haralick, com segundo momento angular, entropia e contraste. Use d=1 e  \theta =0}
+\subsubsection{Haralick, com segundo momento angular, entropia e contraste. Use d=1 e  $\theta=0$}
 
 \begin{flushleft}
 Apresentando os seguintes resultados:
@@ -1203,8 +1168,8 @@ Apresentando a imagem abaixo: com Raio = 1 e número de pontos = 8
 
 \section{Reforço de Aprendizado}
 
-\subsubsection{Enunciado}
 Aplique como reforço de conhecimento da matéria de Processamento de imagens digitais, algumas técnicas para analisar, melhorar e classificar uma imagem digital (mandril.jpg).
+
 
 \begin{figure}[H]
     \centering
@@ -1212,7 +1177,7 @@ Aplique como reforço de conhecimento da matéria de Processamento de imagens di
     \caption{Mandrill.jpg}
 \end{figure}
 
-\subsubsection{Parte A}
+\subsection{Parte A}
 
 Selecione uma imagem digital colorida Mandril.jpg, converta a imagem para escala de cinza, adicione um ruído gaussiano à imagem com uma média de 0 e desvio padrão de 20. 
 
@@ -1226,7 +1191,7 @@ Após a execução do código a seguinte imagem é exibida.
     {images_generate/14/atividadefinal_a.png}}}
 \end{figure}
 
-\subsubsection{Parte B}
+\subsection{Parte B}
 
 Selecione uma imagem digital colorida Mandril.jpg, aplique um filtro de média para reduzir o ruído adicionado aplique um filtro de aguçamento para realçar os detalhes da imagem. 
 
@@ -1241,7 +1206,7 @@ Após a execução do código a seguinte imagem é exibida.
 \end{figure}
 
 
-\subsubsection{Parte C}
+\subsection{Parte C}
 
 Selecione uma imagem digital colorida Mandril.jpg , converta a imagem para um espaço de cores diferente (por exemplo, RGB para HSV). Realize uma manipulação na componente de cor da imagem para obter um efeito específico. 
 
@@ -1257,7 +1222,7 @@ Após a execução do código a seguinte imagem é exibida.
 
 
 
-\subsubsection{Parte D}
+\subsection{Parte D}
 
 Selecione uma imagem digital colorida Mandril.jpg, aplique uma técnica de segmentação para extrair uma região de interesse da imagem.
 
@@ -1272,7 +1237,7 @@ Após a execução do código a seguinte imagem é exibida.
 \end{figure}
 
 
-\subsubsection{Parte E}
+\subsection{Parte E}
 
 Selecione uma imagem digital colorida Mandril.jpg, aplique a transformada de Fourier na imagem segmentada. 
 
@@ -1287,7 +1252,7 @@ Após a execução do código a seguinte imagem é exibida.
 \end{figure}
 
 
-\subsubsection{Parte F}
+\subsection{Parte F}
 
 Selecione uma imagem digital colorida Mandril.jpg, remova frequências indesejadas utilizando um filtro passa-baixa. 
 
@@ -1302,7 +1267,7 @@ Após a execução do código a seguinte imagem é exibida.
 \end{figure}
 
 
-\subsubsection{Parte G}
+\subsection{Parte G}
 
 Selecione uma imagem digital colorida Mandril.jpg, realize a transformada inversa de Fourier para obter a imagem filtrada.
 
@@ -1317,12 +1282,74 @@ Após a execução do código a seguinte imagem é exibida.
 \end{figure}
 
 
+\subsection{Parte H}
+
+Selecione uma imagem digital colorida Mandril.jpg, aplique operações morfológicas para melhorar a forma e o contorno das regiões segmentadas. 
+
+\lstinputlisting[language=Python]{sources/14_final_h.py}
+
+Após a execução do código a seguinte imagem é exibida.
+
+\begin{figure}[H]
+    \centering
+    {{\includegraphics
+    {images_generate/14/atividadefinal_h.png}}}
+\end{figure}
 
 
 
+\subsection{Parte I}
+
+Com base na imagem gerada anteriormente com as regiões segmentadas, extraia um conjunto de características de textura das regiões segmentadas. 
+
+Para esse conjunto de características é usada a biblioteca mahotas para calcular a matriz de coocorrência (também conhecida como matriz de Haralick). Em seguida, as características de textura são extraídas da matriz de coocorrência e são calculadas como a média dos valores correspondentes na matriz de coocorrência. Então, são extraídas e exibidas as características de contraste, dissimilaridade, homogeneidade, energia e correlação.
+
+\lstinputlisting[language=Python]{sources/14_final_i.py}
+
+Após a execução do código é exibido.
 
 
+\lstinputlisting[language=Bash]{outputs/14_final_i.txt}
 
+
+\subsection{Parte J}
+
+Selecione uma imagem digital colorida Mandril.jpg, construa um espaço de características com base nas características extraídas. 
+
+\lstinputlisting[language=Python]{sources/14_final_j.py}
+
+Após a execução do código é exibido.
+
+
+\lstinputlisting[language=Bash]{outputs/14_final_j.txt}
+
+E exibida a imagem abaixo.
+
+\begin{figure}[H]
+    \centering
+    {{\includegraphics
+    {images_generate/14/atividadefinal_j.png}}}
+\end{figure}
+
+
+\subsection{Parte K}
+
+Selecione uma imagem digital colorida Mandril.jpg, realize uma classificação das regiões utilizando um algoritmo de aprendizado de máquina (Nesse exemplo utilizando o algoritmo de classificação K-means).
+
+\lstinputlisting[language=Python]{sources/14_final_k.py}
+
+Após a execução do código a seguinte imagem é exibida.
+
+\begin{figure}[H]
+    \centering
+    {{\includegraphics
+    {images_generate/14/atividadefinal_k.png}}}
+\end{figure}
+
+
+\subsection{Conclusão}
+
+É importante analisar os resultados obtidos em cada etapa para compreender os efeitos das técnicas aplicadas e aprimorar o conhecimento no processamento de imagens digitais.
 
 
 \end{document}
