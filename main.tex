@@ -55,7 +55,7 @@
     {ô}{\^{o}}1
     {ú}{\'{u}}1
     {ç}{\c{c}}1
-    {∑}{\\Sigma}1
+    {Σ}{\\Sigma}1
 }
 
 \title{Documentação de atividades do Grupo 5 \\ Processamento de Imagens Digitais \\ Professor Leandro Alves Neves}
@@ -173,6 +173,23 @@ A função {\ttfamily cluster\textunderscore image} é executada 5 vezes uma par
 \end{flushleft}
 
 \lstinputlisting[language=Bash]{outputs/02_clustering_images.txt}
+
+\begin{flushleft}
+Assim também temos as imagens cluterizadas
+\end{flushleft}
+
+\begin{figure}[H]
+    \centering
+    \subfloat[\centering a.bmp]{{\includegraphics[width=2cm]{images_generate/02/a_clustered.jpg}}}%
+    \qquad
+    \subfloat[\centering b.bmp]{{\includegraphics[width=2cm]{images_generate/02/b_clustered.jpg}}}%
+    \qquad
+    \subfloat[\centering c.bmp]{{\includegraphics[width=2cm]{images_generate/02/c_clustered.jpg}}}%
+    \qquad
+    \subfloat[\centering d.bmp]{{\includegraphics[width=2cm]{images_generate/02/d_clustered.jpg}}}%
+    \qquad
+    \subfloat[\centering e.bmp]{{\includegraphics[width=2cm]{images_generate/02/e_clustered.jpg}}}%
+\end{figure}
 
 \pagebreak
 
@@ -607,8 +624,8 @@ mae = np.mean(np.abs(corrected_img - original_img))
 # Calcula o erro médio quadrático (MSE)
 mse = np.mean((corrected_img - original_img)**2)
 
-library.print_out(f"MAE: {mae}")
-library.print_out(f"MSE: {mse}")
+print_out(f"MAE: {mae}")
+print_out(f"MSE: {mse}")
 \end{lstlisting}
 
 \begin{flushleft}
@@ -742,7 +759,7 @@ As duas funções são executadas utlizando como parâmetro a imagem e.bmp. Apó
     \centering
     \subfloat[\centering Ruído sal e pimenta]{{\includegraphics[width=6cm] {images_generate/03/e_ruido_salpimenta.jpg}}}%
     \qquad
-    \subfloat[\centering Ruído gaussiano]{{\includegraphics[width=6cm]{images_generate/03/e_ruido_gaussiano.jpg}}}%
+    \subfloat[\centering Ruído gaussiano]{{\includegraphics[width=6cm]{images_generate/03/e_noise_gaussian.jpg}}}%
 \end{figure}
 
 \begin{flushleft}
@@ -1183,5 +1200,129 @@ Apresentando a imagem abaixo: com Raio = 1 e número de pontos = 8
 \end{figure}
 
 \subsubsection{Dimensão fractal (DF), usando Box-couting. A DF deve ser definida via coeficiente angular da regressão log x log. Os dois primeiros valores parciais de DF, em função das iterações 1 e 2, também devem ser apresentados}
+
+\section{Reforço de Aprendizado}
+
+\subsubsection{Enunciado}
+Aplique como reforço de conhecimento da matéria de Processamento de imagens digitais, algumas técnicas para analisar, melhorar e classificar uma imagem digital (mandril.jpg).
+
+\begin{figure}[H]
+    \centering
+    {{\includegraphics[width=8cm]{images_original/14/Mandrill.jpg}}}
+    \caption{Mandrill.jpg}
+\end{figure}
+
+\subsubsection{Parte A}
+
+Selecione uma imagem digital colorida Mandril.jpg, converta a imagem para escala de cinza, adicione um ruído gaussiano à imagem com uma média de 0 e desvio padrão de 20. 
+
+\lstinputlisting[language=Python]{sources/14_final_a.py}
+
+Após a execução do código a seguinte imagem é exibida.
+
+\begin{figure}[H]
+    \centering
+    {{\includegraphics
+    {images_generate/14/atividadefinal_a.png}}}
+\end{figure}
+
+\subsubsection{Parte B}
+
+Selecione uma imagem digital colorida Mandril.jpg, aplique um filtro de média para reduzir o ruído adicionado aplique um filtro de aguçamento para realçar os detalhes da imagem. 
+
+\lstinputlisting[language=Python]{sources/14_final_b.py}
+
+Após a execução do código a seguinte imagem é exibida.
+
+\begin{figure}[H]
+    \centering
+    {{\includegraphics
+    {images_generate/14/atividadefinal_b.png}}}
+\end{figure}
+
+
+\subsubsection{Parte C}
+
+Selecione uma imagem digital colorida Mandril.jpg , converta a imagem para um espaço de cores diferente (por exemplo, RGB para HSV). Realize uma manipulação na componente de cor da imagem para obter um efeito específico. 
+
+\lstinputlisting[language=Python]{sources/14_final_c.py}
+
+Após a execução do código a seguinte imagem é exibida.
+
+\begin{figure}[H]
+    \centering
+    {{\includegraphics
+    {images_generate/14/atividadefinal_c.png}}}
+\end{figure}
+
+
+
+\subsubsection{Parte D}
+
+Selecione uma imagem digital colorida Mandril.jpg, aplique uma técnica de segmentação para extrair uma região de interesse da imagem.
+
+\lstinputlisting[language=Python]{sources/14_final_d.py}
+
+Após a execução do código a seguinte imagem é exibida.
+
+\begin{figure}[H]
+    \centering
+    {{\includegraphics
+    {images_generate/14/atividadefinal_d.png}}}
+\end{figure}
+
+
+\subsubsection{Parte E}
+
+Selecione uma imagem digital colorida Mandril.jpg, aplique a transformada de Fourier na imagem segmentada. 
+
+\lstinputlisting[language=Python]{sources/14_final_e.py}
+
+Após a execução do código a seguinte imagem é exibida.
+
+\begin{figure}[H]
+    \centering
+    {{\includegraphics
+    {images_generate/14/atividadefinal_e.png}}}
+\end{figure}
+
+
+\subsubsection{Parte F}
+
+Selecione uma imagem digital colorida Mandril.jpg, remova frequências indesejadas utilizando um filtro passa-baixa. 
+
+\lstinputlisting[language=Python]{sources/14_final_f.py}
+
+Após a execução do código a seguinte imagem é exibida.
+
+\begin{figure}[H]
+    \centering
+    {{\includegraphics
+    {images_generate/14/atividadefinal_f.png}}}
+\end{figure}
+
+
+\subsubsection{Parte G}
+
+Selecione uma imagem digital colorida Mandril.jpg, realize a transformada inversa de Fourier para obter a imagem filtrada.
+
+\lstinputlisting[language=Python]{sources/14_final_g.py}
+
+Após a execução do código a seguinte imagem é exibida.
+
+\begin{figure}[H]
+    \centering
+    {{\includegraphics
+    {images_generate/14/atividadefinal_g.png}}}
+\end{figure}
+
+
+
+
+
+
+
+
+
 
 \end{document}

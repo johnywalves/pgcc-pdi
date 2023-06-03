@@ -1,6 +1,10 @@
-import numpy as np
+# Instalar pacote com `pip3 install pillow`
 from PIL import Image
+# The fundamental package for scientific computing with Python
+import numpy as np
+# Matplotlib: Visualization with Python
 from matplotlib import pyplot as plt
+
 from skimage import io, img_as_float, img_as_ubyte, color, util 
 
 def conversao_cinza(nome):
