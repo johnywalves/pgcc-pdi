@@ -1,0 +1,1 @@
+A diferença média absoluta entre as imagens é: 2.944183349609375
