@@ -50,33 +50,58 @@ def bmp_to_hsi(input_file, output_file):
                     map(lambda x: int(x * 255), colorsys.hsv_to_rgb(*pixel_hsi))))
 
         # Salva a nova imagem HSI em um arquivo BMP
-        new_img.save(output_file)
+        new_img.convert("RGB").save(output_file)
 
 # agora pegamos a imagem original que está no formato RGB e aplicamos a equalização
 # Carrega a imagem de entrada
 def equalize_image(nome):
-    img = np.array(Image.open('./images/'+nome+'.bmp'))
+    img = np.array(Image.open('./images_original/09/' + nome + '.bmp'))
+
     # Separa os canais R, G e B da imagem
     r_channel = img[:, :, 0]
     g_channel = img[:, :, 1]
     b_channel = img[:, :, 2]
 
     # Aplica a equalização de histograma em cada canal
-    r_equalized = np.interp(r_channel.flatten(), np.arange(256), np.histogram(r_channel, bins=256, range=(0, 255))[0].cumsum()*255/(r_channel.shape[0]*r_channel.shape[1])).reshape(r_channel.shape)
-    g_equalized = np.interp(g_channel.flatten(), np.arange(256), np.histogram(g_channel, bins=256, range=(0, 255))[0].cumsum()*255/(g_channel.shape[0]*g_channel.shape[1])).reshape(g_channel.shape)
-    b_equalized = np.interp(b_channel.flatten(), np.arange(256), np.histogram(b_channel, bins=256, range=(0, 255))[0].cumsum()*255/(b_channel.shape[0]*b_channel.shape[1])).reshape(b_channel.shape)
+    r_equalized = np.interp(
+            r_channel.flatten(), 
+            np.arange(256), 
+            np.histogram(
+                r_channel, 
+                bins=256, 
+                range=(0, 255)
+            )[0].cumsum() * 255 / (r_channel.shape[0] * r_channel.shape[1])
+        ).reshape(r_channel.shape)
+    g_equalized = np.interp(
+            g_channel.flatten(), 
+            np.arange(256), 
+            np.histogram(
+                g_channel, 
+                bins=256, 
+                range=(0, 255)
+            )[0].cumsum() * 255 / (g_channel.shape[0] * g_channel.shape[1])
+        ).reshape(g_channel.shape)
+    b_equalized = np.interp(
+            b_channel.flatten(), 
+            np.arange(256), 
+            np.histogram(
+                b_channel, 
+                bins=256, 
+                range=(0, 255)
+            )[0].cumsum() *  255 / (b_channel.shape[0] * b_channel.shape[1])
+        ).reshape(b_channel.shape)
     
     # Junta os canais R, G e B equalizados em uma única imagem
     img_equalized = np.stack(
         (r_equalized, g_equalized, b_equalized), axis=2).astype(np.uint8)
     
     # Salva a imagem equalizada
-    Image.fromarray(img_equalized).save('./images/' + nome + '_equalizada.jpg')
+    Image.fromarray(img_equalized).save('./images_generate/09/' + nome + '_equalizada.jpg')
 
 def gera_histograma(nome):
     # agora carregamos a imagem equalizada e mostramos seu histograma
     # Carrega a imagem de entrada
-    img = np.array(Image.open('./images/' + nome + '_equalizada.jpg'))
+    img = np.array(Image.open('./images_generate/09/' + nome + '_equalizada.jpg'))
 
     # Separa os canais R, G e B da imagem
     r_channel = img[:, :, 0]
@@ -84,16 +109,40 @@ def gera_histograma(nome):
     b_channel = img[:, :, 2]
 
     # Aplica a equalização de histograma em cada canal
-    r_equalized = np.interp(r_channel.flatten(), np.arange(256), np.histogram(r_channel, bins=256, range=(0, 255))[0].cumsum()*255/(r_channel.shape[0]*r_channel.shape[1])).reshape(r_channel.shape)
-    g_equalized = np.interp(g_channel.flatten(), np.arange(256), np.histogram(g_channel, bins=256, range=(0, 255))[0].cumsum()*255/(g_channel.shape[0]*g_channel.shape[1])).reshape(g_channel.shape)
-    b_equalized = np.interp(b_channel.flatten(), np.arange(256), np.histogram(b_channel, bins=256, range=(0, 255))[0].cumsum()*255/(b_channel.shape[0]*b_channel.shape[1])).reshape(b_channel.shape)
+    r_equalized = np.interp(
+            r_channel.flatten(), 
+            np.arange(256), 
+            np.histogram(
+                r_channel, 
+                bins=256, 
+                range=(0, 255)
+            )[0].cumsum() * 255 / (r_channel.shape[0] * r_channel.shape[1])
+        ).reshape(r_channel.shape)
+    g_equalized = np.interp(
+            g_channel.flatten(), 
+            np.arange(256), 
+            np.histogram(
+                g_channel, 
+                bins=256, 
+                range=(0, 255)
+            )[0].cumsum() * 255 / (g_channel.shape[0] * g_channel.shape[1])
+        ).reshape(g_channel.shape)
+    b_equalized = np.interp(
+            b_channel.flatten(), 
+            np.arange(256), 
+            np.histogram(
+                b_channel, 
+                bins=256, 
+                range=(0, 255)
+            )[0].cumsum() * 255 / (b_channel.shape[0] * b_channel.shape[1])
+        ).reshape(b_channel.shape)
     
     # Junta os canais R, G e B equalizados em uma única imagem
     img_equalized = np.stack((r_equalized, g_equalized, b_equalized), axis=2).astype(np.uint8)
     
     # Calcula o histograma equalizado da imagem equalizada
     hist_equalized = np.histogram(img_equalized.flatten(), bins=256, range=(0, 255))[0]
-   
+
     # Plotar o histograma equalizado
     plt.clf()
     plt.plot(hist_equalized)
@@ -102,12 +151,12 @@ def gera_histograma(nome):
     plt.ylabel('Frequência')
 
     # Salva a figura do histograma em um arquivo
-    plt.savefig('./images/' + nome + '_histograma_equalizado.jpg')
+    plt.savefig('./images_generate/09/' + nome + '_histograma_equalizado.jpg')
 
 # função que executa o exercicio completo para a imgem especificada
 def executa_exercicio(nome):
     # Conversão da imagem original para o formato HSI
-    bmp_to_hsi('./images/' + nome + '.bmp', './images/' + nome + '_HSI.bmp')
+    bmp_to_hsi('./images_original/09/' + nome + '.bmp', './images_generate/09/' + nome + '_HSI.jpg')
 
     # Equalização da imagem original no formato RGB
     equalize_image(nome)

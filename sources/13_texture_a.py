@@ -1,9 +1,12 @@
-# Importação da biblioteca de tratamento de imagens
-from PIL import Image
-# The fundamental package for scientific computing with Python
 import numpy as np
-# Importação da biblioteca própria
-import library
+from PIL import Image
+import os
+
+file_out = open(os.path.basename(__file__).split('.')[0] + '.txt', "w")
+
+def print_out(text):
+    file_out.write(text + '\n')
+    print(text)
 
 def calculate_glcm(image_array, distance, angle):
     # cria uma matriz de zeros para a matriz de co-ocorrência
@@ -45,6 +48,6 @@ img_array = np.array(img)
 asm, entropy, contrast = calculate_haralick(img_array, distance=1, angle=0)
 
 # exibe os resultados
-library.print_out(f'Second Moment Angular: {asm:.4f}')
-library.print_out(f'Entropia: {entropy:.4f}')
-library.print_out(f'Contraste: {contrast:.4f}')
+print_out(f'Second Moment Angular: {asm:.4f}')
+print_out(f'Entropia: {entropy:.4f}')
+print_out(f'Contraste: {contrast:.4f}')

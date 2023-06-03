@@ -1,8 +1,12 @@
+# Instalar pacote com `pip3 install pillow`
 from PIL import Image
+# The fundamental package for scientific computing with Python
 import numpy as np
+# Importação da biblioteca própria
+import library
 
 # Carrega a imagem de entrada
-img = Image.open("images/Img_seg.jpg").convert('RGB')
+img = Image.open("./images_original/11/Img_seg.jpg").convert('RGB')
 
 # Converte a imagem para um array numpy
 img_array = np.array(img)
@@ -40,7 +44,13 @@ for i in range(opening.shape[0]):
                         if di == 0 and dj == 0:
                             continue
                         ni, nj = i + di, j + dj
-                        if ni >= 0 and nj >= 0 and ni < opening.shape[0] and nj < opening.shape[1] and opening[ni, nj] != 0:
+                        if (
+                            ni >= 0 
+                            and nj >= 0 
+                            and ni < opening.shape[0] 
+                            and nj < opening.shape[1] 
+                            and opening[ni, nj] != 0
+                            ):
                             opening[ni, nj] = 0
                             contour.append((nj, ni))
                             i, j = ni, nj
@@ -119,7 +129,7 @@ for region in regions_of_interest:
                 false_positives += 1
                 break
     
-    true_negatives += thresh.shape[0]*thresh.shape[1] - true_positives - false_positives - false_negatives
+    true_negatives += thresh.shape[0] * thresh.shape[1] - true_positives - false_positives - false_negatives
     
 accuracy = (true_positives + true_negatives) / (true_positives + true_negatives + false_positives + false_negatives)
 if true_positives + false_positives == 0:
@@ -129,11 +139,10 @@ else:
 
 recall = true_positives / (true_positives + false_negatives)
 
-print("Taxas de acerto e erro:")
-print(f"Acurácia: {accuracy:.2f}")
-print(f"Precisão: {precision:.2f}")
-print(f"Recall: {recall:.2f}")
-
+library.print_out("Taxas de acerto e erro:")
+library.print_out(f"Acurácia: {accuracy:.2f}")
+library.print_out(f"Precisão: {precision:.2f}")
+library.print_out(f"Recall: {recall:.2f}")
 
 # Desenha os contornos encontrados na imagem original
 for contour in contours:
@@ -145,6 +154,5 @@ for contour in contours:
         if x1 >= 0 and x1 < img_array.shape[1] and y1 >= 0 and y1 < img_array.shape[0]:
             img_array[y1, x1] = [0, 255, 0]
 
-
 # Salva a imagem segmentada
-Image.fromarray(img_array).save("images/Img_seg_segmentada.jpg")
+Image.fromarray(img_array).save("./images_generate/11/Img_seg_segmentada.jpg")

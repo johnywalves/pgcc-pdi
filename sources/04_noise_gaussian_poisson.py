@@ -62,7 +62,7 @@ pixels = img_poison.load()
 for i in range(img_poison.size[0]):
     for j in range(img_poison.size[1]):
         pixels[i, j] = (int(128 + B_poisson[i][j]))
-img_poison.save('./images_generate/04/pz_poisson.bmp')
+img_poison.convert('RGB').save('./images_generate/04/pz_poisson.jpg')
 
 # Degradando a imagem A com o ruído de Poisson
 A_poisson = np.clip(A + B_poisson, 0, 255).astype(int)

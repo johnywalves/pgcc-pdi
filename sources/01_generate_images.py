@@ -68,6 +68,7 @@ create_images('d', quantization_d)
 create_images('e', lambda x, y: 110 + (x // 64 * 10) + (y // 64 * 40))
 
 # References
-# https://stackoverflow.com/questions/20304438/how-can-i-use-the-python-imaging-library-to-create-a-bitmap
+# https://stackoverflow.com/questions/20304438/
+#     how-can-i-use-the-python-imaging-library-to-create-a-bitmap
 # https://pillow.readthedocs.io/en/stable/handbook/concepts.html#concept-modes
 # https://en.wikipedia.org/wiki/Hoshen%E2%80%93Kopelman_algorithm

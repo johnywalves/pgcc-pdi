@@ -1,4 +1,5 @@
 sources/__pycache__/
 outputs/*.txt
 images_generate/*/*.jpg
-images_generate/*.bmp
+images_generate/*/*.png
+images_original/*.bmp

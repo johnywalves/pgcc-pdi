@@ -9,3 +9,6 @@ python3 ./sources/08_noise.py
 python3 ./sources/08_a.py
 python3 ./sources/08_b.py
 python3 ./sources/08_c.py
+python3 ./sources/09_colors.py
+python3 ./sources/10_frequency.py
+python3 ./sources/11_segmentation.py

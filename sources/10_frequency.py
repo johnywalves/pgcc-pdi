@@ -3,22 +3,20 @@ from PIL import Image
 from matplotlib import pyplot as plt
 from skimage import io, img_as_float, img_as_ubyte, color, util 
 
-
 def conversao_cinza(nome):
     # Carregar a imagem de entrada
-    img = Image.open('images/'+nome+'.png')
+    img = Image.open('./images_original/10/' + nome + '.png')
     # Converter a imagem para escala de cinza
     img_gray = img.convert('L')
     # Converter a imagem para 8 bits de quantização
     img_gray_8bits = img_gray.quantize(colors=256)
     # Salvar a imagem resultante
-    img_gray_8bits.save('images/'+nome+'_cinza_8bits.png')
-
+    img_gray_8bits.save('./images_generate/10/' + nome + '_cinza_8bits.png')
 
 
 def ruido_gaussiano(nome):
     # Carregue a imagem
-    img = Image.open('images/'+nome+'_cinza_8bits.png')
+    img = Image.open('./images_generate/10/' + nome + '_cinza_8bits.png')
     # Converta a imagem para um array NumPy
     img_array = np.array(img)
     # Defina a média e o desvio padrão do ruído gaussiano
@@ -31,24 +29,24 @@ def ruido_gaussiano(nome):
     # Converta o array NumPy de volta para uma imagem
     noisy_img = Image.fromarray(noisy_img.astype('uint8'))
     # Salve a imagem com ruído
-    noisy_img.save('images/'+nome+'_gaussiano.png')
+    noisy_img.save('./images_generate/10/' + nome + '_gaussiano.png')
 
 
 def img_DFT(nome):
     # Carregar a imagem de entrada
-    img = plt.imread('images/'+nome+'_gaussiano.png')
+    img = plt.imread('./images_generate/10/' + nome + '_gaussiano.png')
     # Aplicar a DFT
     dft = np.fft.fft2(img)
     dft_shift = np.fft.fftshift(dft)
     # Calcular o espectro de frequência
     magnitude_spectrum = 40 * np.log(np.abs(dft_shift))
     # Salvar a imagem resultante
-    plt.imsave('images/'+nome+'_dft.png', magnitude_spectrum, cmap='gray')
+    plt.imsave('./images_generate/10/' + nome + '_dft.png', magnitude_spectrum, cmap='gray')
 
 
 def deslocamento_frequencias(nome):
     # Carregando a imagem 
-    img = io.imread('images/'+nome+'_dft.png', as_gray=True) 
+    img = io.imread('./images_generate/10/' + nome + '_dft.png', as_gray=True) 
     # Aplicando a transformada discreta de Fourier 
     dft = np.fft.fft2(img) 
     # Centralizando o espectro 
@@ -62,13 +60,13 @@ def deslocamento_frequencias(nome):
     ax[1].imshow(np.log(1 + magnitude_spectrum), cmap='gray') 
     ax[1].set_title('Espectro de Fourier com Deslocamento') 
     # Salvando o resultado 
-    plt.savefig('images/'+nome+'_desloamento_frequencia.png', dpi=300, bbox_inches='tight') 
+    plt.savefig('./images_generate/10/' + nome + '_desloamento_frequencia.png', dpi=300, bbox_inches='tight') 
 
 
 
 def filtros_dominio_frequencia_2(nome):
     # carrega a imagem em tons de cinza com ruído gaussiano
-    img = Image.open('images/'+nome+'_gaussiano.png').convert('L')
+    img = Image.open('./images_generate/10/' + nome + '_gaussiano.png').convert('L')
     img = np.array(img)
     # calcula o espectro de Fourier da imagem original
     img_fft = np.fft.fft2(img)
@@ -111,10 +109,7 @@ def filtros_dominio_frequencia_2(nome):
     axs[1, 2].set_title('Espectro Fourier Img c/ Filtro Gaussiano')
     for ax in axs.flat:
         ax.label_outer()
-    plt.savefig("images/"+nome+"_final.png")
-
-
-
+    plt.savefig("./images_generate/10/" + nome + "_final.png")
 
 conversao_cinza('img_exercicio2')
 ruido_gaussiano('img_exercicio2')
