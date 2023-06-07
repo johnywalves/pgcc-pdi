@@ -1,7 +1,8 @@
+# Importação da OpenCV2 (Computer Vision)
 import cv2
 
 # Carregar a imagem
-imagem = cv2.imread("img/Mandrill.jpg")
+imagem = cv2.imread("./images_original/14/Mandrill.jpg")
 
 # Converter a imagem para escala de cinza
 imagem_cinza = cv2.cvtColor(imagem, cv2.COLOR_BGR2GRAY)
@@ -22,6 +23,4 @@ x, y, largura, altura = cv2.boundingRect(maior_contorno)
 regiao_interesse = imagem[y:y+altura, x:x+largura]
 
 # Mostrar a região de interesse
-cv2.imshow("Região de Interesse", regiao_interesse)
-cv2.waitKey(0)
-cv2.destroyAllWindows()
+cv2.imwrite('./images_generate/14/atividadefinal_d.png', regiao_interesse)

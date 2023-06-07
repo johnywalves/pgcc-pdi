@@ -1,9 +1,12 @@
+# Importação da OpenCV2 (Computer Vision)
 import cv2
+# The fundamental package for scientific computing with Python
 import numpy as np
+# Matplotlib: Visualization with Python
 from matplotlib import pyplot as plt
 
 # Carregar a imagem de entrada
-img = cv2.imread('img/Mandrill.jpg', 0)  # Carrega a imagem em escala de cinza
+img = cv2.imread('./images_original/14/Mandrill.jpg', 0)  # Carrega a imagem em escala de cinza
 
 # Aplicar a transformada de Fourier
 dft = cv2.dft(np.float32(img), flags=cv2.DFT_COMPLEX_OUTPUT)
@@ -29,4 +32,4 @@ plt.subplot(121), plt.imshow(img, cmap='gray')
 plt.title('Imagem Original'), plt.xticks([]), plt.yticks([])
 plt.subplot(122), plt.imshow(filtered_img, cmap='gray')
 plt.title('Imagem Filtrada'), plt.xticks([]), plt.yticks([])
-plt.show()
+plt.savefig('./images_generate/14/atividadefinal_g.png')

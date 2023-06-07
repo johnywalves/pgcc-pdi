@@ -1,12 +1,9 @@
-import numpy as np
+# Instalar pacote com `pip3 install pillow`
 from PIL import Image
-import os
-
-file_out = open(os.path.basename(__file__).split('.')[0] + '.txt', "w")
-
-def print_out(text):
-    file_out.write(text + '\n')
-    print(text)
+# The fundamental package for scientific computing with Python
+import numpy as np
+# Importação da biblioteca própria
+import library
 
 def calculate_glcm(image_array, distance, angle):
     # cria uma matriz de zeros para a matriz de co-ocorrência
@@ -39,7 +36,7 @@ def calculate_haralick(image_array, distance=1, angle=0):
     return asm, entropy, contrast
 
 # carrega a imagem em tons de cinza
-img = Image.open('images/R0_caso1.JPG').convert('L')
+img = Image.open('./images_original/13/R0_caso1.jpg').convert('L')
 
 # converte para matriz NumPy
 img_array = np.array(img)
@@ -48,6 +45,6 @@ img_array = np.array(img)
 asm, entropy, contrast = calculate_haralick(img_array, distance=1, angle=0)
 
 # exibe os resultados
-print_out(f'Second Moment Angular: {asm:.4f}')
-print_out(f'Entropia: {entropy:.4f}')
-print_out(f'Contraste: {contrast:.4f}')
+library.print_out(f'Second Moment Angular: {asm:.4f}')
+library.print_out(f'Entropia: {entropy:.4f}')
+library.print_out(f'Contraste: {contrast:.4f}')

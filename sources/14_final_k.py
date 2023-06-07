@@ -1,9 +1,12 @@
-import numpy as np
-from sklearn.cluster import KMeans
+# Instalar pacote com `pip3 install pillow`
 from PIL import Image
+# The fundamental package for scientific computing with Python
+import numpy as np
+
+from sklearn.cluster import KMeans
 
 # Carregar a imagem
-imagem = Image.open('img/Mandrill.jpg')
+imagem = Image.open('./images_original/14/Mandrill.jpg')
 
 # Converter a imagem em uma matriz numpy
 imagem_array = np.array(imagem)
@@ -24,7 +27,7 @@ rotulos = kmeans.labels_
 rotulos = rotulos.reshape(largura, altura)
 
 # Mostrar a imagem original e a imagem com as regiões classificadas
-imagem.show()
+#imagem.save('./images_generate/14/atividadefinal_k.png')
 
 imagem_classificada = Image.fromarray(rotulos.astype(np.uint8) * int(255 / (numero_clusters - 1)))
-imagem_classificada.show()
+imagem_classificada.convert('RGB').save('./images_generate/14/atividadefinal_k.png')

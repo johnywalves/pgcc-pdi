@@ -1,10 +1,12 @@
+# Instalar pacote com `pip3 install pillow`
 from PIL import Image
+# The fundamental package for scientific computing with Python
 import numpy as np
-import matplotlib.pyplot as plt
+# Matplotlib: Visualization with Python
+from matplotlib import pyplot as plt
 
 # Carregar a imagem
-image_path = 'img/Mandrill.jpg'
-original_image = Image.open(image_path)
+original_image = Image.open('./images_original/14/Mandrill.jpg')
 
 # Converter para escala de cinza
 grayscale_image = original_image.convert('L')
@@ -31,4 +33,5 @@ axes[0].axis('off')
 axes[1].imshow(noisy_image, cmap='gray')
 axes[1].set_title('Imagem com Ruído Gaussiano')
 axes[1].axis('off')
-plt.show()
+
+plt.savefig('./images_generate/14/atividadefinal_a.png')

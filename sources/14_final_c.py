@@ -1,9 +1,8 @@
+# Instalar pacote com `pip3 install pillow`
 from PIL import Image
-import colorsys
 
 # Abrir a imagem
-caminho_imagem = "img/Mandrill.jpg"
-imagem = Image.open(caminho_imagem)
+imagem = Image.open("./images_original/14/Mandrill.jpg")
 
 # Converter a imagem para o espaço de cores HSV
 imagem_hsv = imagem.convert("HSV")
@@ -26,5 +25,4 @@ imagem_atualizada.putdata(dados_atualizados)
 imagem_final = imagem_atualizada.convert("RGB")
 
 # Exibir ou salvar a imagem final
-imagem_final.show()
-# imagem_final.save("saida.jpg")  # Descomente esta linha para salvar a imagem
+imagem_final.save('./images_generate/14/atividadefinal_c.png')

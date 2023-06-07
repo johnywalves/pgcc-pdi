@@ -1,3 +1,4 @@
+# Importação da OpenCV2 (Computer Vision)
 import cv2
 
 def limiarizacao (entrada, saida):

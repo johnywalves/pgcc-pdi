@@ -73,7 +73,7 @@ Foram instaladas os pacotes do Python Package Index (PyPI), um repositório de s
 \end{flushleft}
 
 \begin{lstlisting}[language=Bash]
-pip install pillow matplotlib scikit-learn
+pip install pillow matplotlib scikit-learn mahotas
 \end{lstlisting}
 
 \begin{flushleft}
@@ -1128,11 +1128,24 @@ Apresente os vetores para cada imagem. As imagens são apresentadas nos próximo
 Em seguida, observe os resultados numéricos e indique quais descritores apresentam as maiores diferenças para separar as imagens R0 de R3. Apresente os gráficos para ilustrar as posições espaciais dos descritores. Por exemplo, eixo x representa momento angular, eixo y a entropia e eixo z o contraste. Use a mesma estratégia para DF. Cada imagem é um ponto espacial em função das suas coordenadas/descritores. Quais as dificuldades neste tipo de análise? Quais as soluções?
 \end{flushleft}
 
+\begin{figure}[H]
+    \centering
+    \subfloat[\centering R0\textunderscore caso1.jpg ]{{\includegraphics[width=3.3cm]{images_original/13/R0_caso1.jpg}}}%
+    \qquad
+    \subfloat[\centering R0\textunderscore caso2.jpg ]{{\includegraphics[width=3.3cm]{images_original/13/R0_caso2.jpg}}}%
+    \qquad
+      \subfloat[\centering R3\textunderscore caso1.jpg ]{{\includegraphics[width=3.3cm]{images_original/13/R3_caso1.jpg}}}%
+    \qquad
+        \subfloat[\centering R3\textunderscore caso2.jpg ]{{\includegraphics[width=3.3cm]{images_original/13/R3_caso2.jpg}}}%
+\end{figure}
+
 \subsection{Código Fonte}
 
 \subsubsection{Haralick, com segundo momento angular, entropia e contraste. Use d=1 e $\theta=0$}
 
 \lstinputlisting[language=Python]{sources/13_texture_a.py}
+
+Para as outras imagens é necessário alterar o nome do arquivo.
 
 \subsubsection{LBP (especificar as condições utilizadas)}
 
@@ -1141,6 +1154,68 @@ Em seguida, observe os resultados numéricos e indique quais descritores apresen
 \subsubsection{Dimensão fractal (DF), usando Box-couting. A DF deve ser definida via coeficiente angular da regressão log x log. Os dois primeiros valores parciais de DF, em função das iterações 1 e 2, também devem ser apresentados}
 
 \lstinputlisting[language=Python]{sources/13_texture_c.py}
+
+Para as outras imagens é necessário alterar o nome do arquivo.
+
+\subsubsection{Apresente os vetores para cada imagem}
+
+Para gerar o vetor da imagem R0\textunderscore caso1.jpg foi utilizado o código abaixo.
+
+\lstinputlisting[language=Python]{sources/13_texture_d_1.py}
+
+Após a execução do código o seguinte vetor é exibido.
+
+\lstinputlisting[language=Bash]{outputs/13_texture_d_1.txt}
+
+Para gerar o vetor da imagem R0\textunderscore caso2.jpg foi utilizado o código abaixo.
+
+\lstinputlisting[language=Python]{sources/13_texture_d_2.py}
+
+Após a execução do código o seguinte vetor é exibido.
+
+\lstinputlisting[language=Bash]{outputs/13_texture_d_2.txt}
+
+Para gerar o vetor da imagem R3\textunderscore caso1.jpg foi utilizado o código abaixo.
+
+\lstinputlisting[language=Python]{sources/13_texture_d_3.py}
+
+Após a execução do código o seguinte vetor é exibido.
+
+\lstinputlisting[language=Bash]{outputs/13_texture_d_3.txt}
+
+Para gerar o vetor da imagem R3\textunderscore caso2.jpg foi utilizado o código abaixo.
+
+\lstinputlisting[language=Python]{sources/13_texture_d_4.py}
+
+Após a execução do código o seguinte vetor é exibido.
+
+\lstinputlisting[language=Bash]{outputs/13_texture_d_4.txt}
+
+\subsubsection{Apresente os gráficos para ilustrar as posições espaciais dos descritores. Por exemplo, eixo x representa momento angular, eixo y a entropia e eixo z o contraste.}
+
+Para gerar o gráfico 3D referente a imagem R0 \textunderscore caso1.jpg, foi utilizado o seguinte código.
+
+\lstinputlisting[language=Python]{sources/13_texture_e_3D_1.py}
+
+Após a execução o seguinte gráfico é exibido.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=0.8]{images_generate/13/R0_caso1_grafico3d.png}
+    \caption{Gráfico 3D (R0 \textunderscore caso1.jpg) }
+\end{figure}
+
+Para gerar o gráfico de barras referente a imagem R0 \textunderscore caso1.jpg, foi utilizado o seguinte código.
+
+\lstinputlisting[language=Python]{sources/13_texture_e_barra_1.py}
+
+Após a execução o seguinte gráfico é exibido.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=0.8]{images_generate/13/R0_caso1_grafico_barras.png}
+    \caption{Gráfico Barras (R0 \textunderscore caso1.jpg) }
+\end{figure}
 
 \subsection{Explicação}
 
@@ -1169,7 +1244,6 @@ Apresentando a imagem abaixo: com Raio = 1 e número de pontos = 8
 \section{Reforço de Aprendizado}
 
 Aplique como reforço de conhecimento da matéria de Processamento de imagens digitais, algumas técnicas para analisar, melhorar e classificar uma imagem digital (mandril.jpg).
-
 
 \begin{figure}[H]
     \centering
@@ -1205,7 +1279,6 @@ Após a execução do código a seguinte imagem é exibida.
     {images_generate/14/atividadefinal_b.png}}}
 \end{figure}
 
-
 \subsection{Parte C}
 
 Selecione uma imagem digital colorida Mandril.jpg , converta a imagem para um espaço de cores diferente (por exemplo, RGB para HSV). Realize uma manipulação na componente de cor da imagem para obter um efeito específico. 
@@ -1219,8 +1292,6 @@ Após a execução do código a seguinte imagem é exibida.
     {{\includegraphics
     {images_generate/14/atividadefinal_c.png}}}
 \end{figure}
-
-
 
 \subsection{Parte D}
 
@@ -1236,7 +1307,6 @@ Após a execução do código a seguinte imagem é exibida.
     {images_generate/14/atividadefinal_d.png}}}
 \end{figure}
 
-
 \subsection{Parte E}
 
 Selecione uma imagem digital colorida Mandril.jpg, aplique a transformada de Fourier na imagem segmentada. 
@@ -1250,7 +1320,6 @@ Após a execução do código a seguinte imagem é exibida.
     {{\includegraphics
     {images_generate/14/atividadefinal_e.png}}}
 \end{figure}
-
 
 \subsection{Parte F}
 
@@ -1266,7 +1335,6 @@ Após a execução do código a seguinte imagem é exibida.
     {images_generate/14/atividadefinal_f.png}}}
 \end{figure}
 
-
 \subsection{Parte G}
 
 Selecione uma imagem digital colorida Mandril.jpg, realize a transformada inversa de Fourier para obter a imagem filtrada.
@@ -1280,7 +1348,6 @@ Após a execução do código a seguinte imagem é exibida.
     {{\includegraphics
     {images_generate/14/atividadefinal_g.png}}}
 \end{figure}
-
 
 \subsection{Parte H}
 
@@ -1296,8 +1363,6 @@ Após a execução do código a seguinte imagem é exibida.
     {images_generate/14/atividadefinal_h.png}}}
 \end{figure}
 
-
-
 \subsection{Parte I}
 
 Com base na imagem gerada anteriormente com as regiões segmentadas, extraia um conjunto de características de textura das regiões segmentadas. 
@@ -1308,9 +1373,7 @@ Para esse conjunto de características é usada a biblioteca mahotas para calcul
 
 Após a execução do código é exibido.
 
-
 \lstinputlisting[language=Bash]{outputs/14_final_i.txt}
-
 
 \subsection{Parte J}
 
@@ -1319,7 +1382,6 @@ Selecione uma imagem digital colorida Mandril.jpg, construa um espaço de caract
 \lstinputlisting[language=Python]{sources/14_final_j.py}
 
 Após a execução do código é exibido.
-
 
 \lstinputlisting[language=Bash]{outputs/14_final_j.txt}
 
@@ -1330,7 +1392,6 @@ E exibida a imagem abaixo.
     {{\includegraphics
     {images_generate/14/atividadefinal_j.png}}}
 \end{figure}
-
 
 \subsection{Parte K}
 
@@ -1346,10 +1407,8 @@ Após a execução do código a seguinte imagem é exibida.
     {images_generate/14/atividadefinal_k.png}}}
 \end{figure}
 
-
 \subsection{Conclusão}
 
 É importante analisar os resultados obtidos em cada etapa para compreender os efeitos das técnicas aplicadas e aprimorar o conhecimento no processamento de imagens digitais.
-
 
 \end{document}

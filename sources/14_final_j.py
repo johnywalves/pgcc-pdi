@@ -1,9 +1,12 @@
+# Importação da OpenCV2 (Computer Vision)
 import cv2
-import numpy as np
-import matplotlib.pyplot as plt
+# Matplotlib: Visualization with Python
+from matplotlib import pyplot as plt
+# Importação da biblioteca própria
+import library
 
 # Carregar a imagem de entrada
-img_path = 'img/Mandrill.jpg'
+img_path = './images_original/14/Mandrill.jpg'
 img = cv2.imread(img_path)
 
 # Converter a imagem para escala de cinza
@@ -27,8 +30,8 @@ plt.plot(flattened_histogram)
 plt.title('Histograma de Intensidade')
 plt.xlabel('Intensidade')
 plt.ylabel('Frequência')
-plt.show()
+plt.savefig('./images_generate/14/atividadefinal_j.png')
 
 # Exibir a matriz de características
-print('Matriz de Características:')
-print(flattened_histogram)
+library.print_out('Matriz de Características:')
+library.print_out(str(flattened_histogram))

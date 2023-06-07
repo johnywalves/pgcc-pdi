@@ -1,10 +1,15 @@
-import numpy as np
+# Instalar pacote com `pip3 install pillow`
 from PIL import Image
+# The fundamental package for scientific computing with Python
+import numpy as np
+# Importação da biblioteca própria
+import library
 
 def boxcount(Z, k):
     S = np.add.reduceat(
         np.add.reduceat(Z, np.arange(0, Z.shape[0], k), axis=0),
                             np.arange(0, Z.shape[1], k), axis=1)
+    
     # Count number of boxes with non-empty pixels
     return len(np.where(S > 0)[0])
 
@@ -41,7 +46,7 @@ def fractal_dimension(Z, threshold=0.9):
     return df, df2, Ns[0], Ns[1]
 
 # Load the image and convert to grayscale
-image = Image.open("images/R0_caso1.JPG").convert("L")
+image = Image.open("./images_original/13/R0_caso1.jpg").convert("L")
 
 # Convert the image to a numpy array
 Z = np.array(image)
@@ -49,8 +54,8 @@ Z = np.array(image)
 # Compute the fractal dimension
 df, df2, N1, N2 = fractal_dimension(Z)
 
-# Print the results
-print("Fractal Dimension (Box Counting): {:.4f}".format(df))
-print("Second Order Coefficient: {:.4f}".format(df2))
-print("N1: {:.4f}".format(N1))
-print("N2: {:.4f}".format(N2))
+# Imprimir resultados
+library.print_out("Fractal Dimension (Box Counting): {:.4f}".format(df))
+library.print_out("Second Order Coefficient: {:.4f}".format(df2))
+library.print_out("N1: {:.4f}".format(N1))
+library.print_out("N2: {:.4f}".format(N2))

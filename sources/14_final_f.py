@@ -1,10 +1,14 @@
-import numpy as np
-import scipy.signal
-import matplotlib.pyplot as plt
+# Instalar pacote com `pip3 install pillow`
 from PIL import Image
+# The fundamental package for scientific computing with Python
+import numpy as np
+# Matplotlib: Visualization with Python
+from matplotlib import pyplot as plt
+
+import scipy.signal
 
 # Carregar a imagem de entrada
-input_image = Image.open("img/Mandrill.jpg")
+input_image = Image.open("./images_original/14/Mandrill.jpg")
 
 # Converter a imagem em um array numpy
 image_array = np.array(input_image)
@@ -53,4 +57,4 @@ plt.imshow(filtered_image, cmap='gray')
 plt.title('Imagem Filtrada')
 plt.axis('off')
 
-plt.show()
+plt.savefig('./images_generate/14/atividadefinal_f.png')

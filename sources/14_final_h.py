@@ -1,8 +1,10 @@
+# Importação da OpenCV2 (Computer Vision)
 import cv2
+# The fundamental package for scientific computing with Python
 import numpy as np
 
 # Carregar a imagem
-img = cv2.imread('img/Mandrill.jpg', cv2.IMREAD_GRAYSCALE)
+img = cv2.imread('./images_original/14/Mandrill.jpg', cv2.IMREAD_GRAYSCALE)
 
 # Aplicar um limiar para binarizar a imagem (opcional)
 _, binary_img = cv2.threshold(img, 127, 255, cv2.THRESH_BINARY)
@@ -23,6 +25,4 @@ contours, _ = cv2.findContours(dilated_img, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_
 contour_img = cv2.drawContours(img, contours, -1, (0, 255, 0), 2)
 
 # Exibir a imagem resultante
-cv2.imshow('Imagem com contornos melhorados', contour_img)
-cv2.waitKey(0)
-cv2.destroyAllWindows()
+cv2.imwrite('./images_generate/14/atividadefinal_h.png', contour_img)
