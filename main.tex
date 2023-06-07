@@ -58,15 +58,51 @@
     {Σ}{\\Sigma}1
 }
 
+
 \title{Documentação de atividades do Grupo 5 \\ Processamento de Imagens Digitais \\ Professor Leandro Alves Neves}
 \author{Anderson Garrido Scaioni (anderson.garrido@unesp.br) \\ Andréia Salmazo Bertasso (andreia.bertasso2@etec.sp.gov.br) \\ Johny William de Oliveira Alves (johnywalves@gmail.com)}
 
 \begin{document}
-\maketitle
 
-\begin{flushleft}
-\textbf{Uso pacotes e criação da biblioteca}
-\end{flushleft}
+\begin{titlepage}
+    \begin{center}
+        \vspace*{1cm}
+
+        UNESP - Universidade Estatual Paulista "Júlio de Mesquita Filho"\\
+        Curso de Mestrado do Programa de Pós-Graduação Interunidades \\
+        Deparmentamento de Ciência da Computação
+        
+        \vspace{1.5cm}
+        
+        \textbf{Professor: Dr. Leandro Alves Neves (leandro.neves@unesp.br) }
+        
+        Anderson Garrido Scaioni (anderson.garrido@unesp.br) \\ 
+        Andréia Salmazo Bertasso (andreia.bertasso2@etec.sp.gov.br) \\ 
+        Johny William de Oliveira Alves (johnywalves@gmail.com)
+               
+        \vfill
+        
+        \textbf{\large
+            Atividades do Programa de Mestrado \\
+            Processamento de Imagens Digitais
+        }
+        
+        Documentação de atividades desenvolvidas pelo Grupo 05
+
+        \vfill
+
+        07 de maio de 2023
+    \end{center}
+\end{titlepage}
+
+\pagebreak
+
+\tableofcontents
+
+\pagebreak
+
+\section*{Uso de pacotes e criação da biblioteca}
+\addcontentsline{toc}{section}{\protect\numberline{}Uso de pacotes e criação da biblioteca}%
 
 \begin{flushleft}
 Foram instaladas os pacotes do Python Package Index (PyPI), um repositório de software para a linguagem de programação Python, fazendo uso do comando
@@ -81,6 +117,10 @@ Para facilitar a apresentação dos resultados posteriores e algumas rotinas for
 \end{flushleft}
 
 \lstinputlisting[language=Python]{sources/library.py}
+
+\begin{flushleft}
+O repositório com os arquivos e código pode ser encontrado em: \url{https://github.com/johnywalves/pgcc-pdi}
+\end{flushleft}
 
 \pagebreak
 
@@ -284,9 +324,11 @@ iniciais para produzir uma imagem B (representativa do ruído em questão) e, em
 \end{flushleft}
 
 \begin{lstlisting}[language=Python]
+# Importação da biblioteca de tratamento de imagens
 from PIL import Image
+# The fundamental package for scientific computing with Python
 import numpy as np
-import os
+# Importação da biblioteca própria
 import library
 \end{lstlisting}
 
@@ -315,7 +357,6 @@ variance = 100
 
 \begin{lstlisting}[language=Python]
 B_gauss = np.random.normal(mean, np.sqrt(variance), size=(5, 5)).astype(int)
-
 \end{lstlisting}
 
 \begin{flushleft}
@@ -331,21 +372,19 @@ A_gauss = np.clip(A + B_gauss, 0, 255).astype(int)
 \end{flushleft}
 
 \begin{lstlisting}[language=Python]
-# Plotando a função p(z) para Gaussiano
-plt.clf()
-plt.hist(A_gauss.flatten(), bins=256, range=(-255, 255), density=True)
-plt.title("Função p(z) do ruído de Gaussiano")
-plt.xlabel("Intensidade de pixel")
-plt.ylabel("Probabilidade")
-plt.savefig('./images/pz_gaussian.jpg')
+# Plotando o histograma de B para mostrar a caracterstica do ruído de Gaussiano
+library.plotar_histograma_ruido(
+        B_gauss.flatten(),
+        "Função p(z) do ruído de Gaussiano", 
+        "./images_generate/04/pz_gauss_noise.jpg"
+    )
 
-# Plotando o histograma de B para mostrar a caracterstica do rudo de Gaussiano
-plt.clf()
-plt.hist(B_gauss.flatten(), bins=256, range=(-255, 255), density=True)
-plt.title("Histograma do ruído de Gaussiano")
-plt.xlabel("Intensidade de pixel")
-plt.ylabel("Frequência")
-plt.savefig('./images/pz_gaussian_histogram.jpg')
+# Plotando a função p(z) para Gaussiano
+library.plotar_histograma_cinzas(
+        A_gauss.flatten(),
+        "Histograma do ruído de Gaussiano", 
+        "./images_generate/04/pz_gauss_degraded.jpg"
+    )
 
 # Ruído Poisson
 # Definindo parmetros iniciais para gerar o ruído de Poisson
@@ -353,29 +392,35 @@ lam = 10.
 
 # Gerando rudo de Poisson em uma imagem B
 B_poisson = np.random.poisson(lam=lam, size=(5, 5)).astype(int)
-print("Imagem B (Poisson):")
-print(B_poisson)
+library.print_out("Imagem B (Poisson):")
+library.print_out(str(B_poisson))
+
+# Geração da imagem de Poisson
+img_poison = Image.new('P', (5, 5))
+pixels = img_poison.load()
+for i in range(img_poison.size[0]):
+    for j in range(img_poison.size[1]):
+        pixels[i, j] = (int(128 + B_poisson[i][j]))
+img_poison.convert('RGB').save('./images_generate/04/pz_poisson.jpg')
 
 # Degradando a imagem A com o ruído de Poisson
 A_poisson = np.clip(A + B_poisson, 0, 255).astype(int)
-print("Imagem A degradada (Poisson):")
-print(A_poisson)
+library.print_out("Imagem A degradada (Poisson):")
+library.print_out(str(A_poisson))
+
+# Plotando o histograma de B para mostrar a caracterstica do ruído de Poisson
+library.plotar_histograma_ruido(
+        B_poisson.flatten(),
+        "Função p(z) do ruído de Poisson", 
+        "./images_generate/04/pz_poisson_noise.jpg"
+    )
 
 # Plotando a função p(z) para Poisson
-plt.clf()
-plt.hist(A_poisson.flatten(), bins=256, range=(-255, 255), density=True)
-plt.title("Função p(z) do ruído de Poisson")
-plt.xlabel("Intensidade de pixel")
-plt.ylabel("Probabilidade")
-plt.savefig('./images/pz_poisson.jpg')
-
-# Plotando o histograma de B para mostrar a caracterstica do ruido de Poisson
-plt.clf()
-plt.hist(B_poisson.flatten(), bins=256, range=(0, 255), density=True)
-plt.title("Histograma do ruído de Poisson")
-plt.xlabel("Intensidade de pixel")
-plt.ylabel("Frequncia")
-plt.savefig('./images/pz_poisson_histogram.jpg')
+library.plotar_histograma_cinzas(
+        A_poisson.flatten(),
+        "Histograma do ruído de Poisson", 
+        "./images_generate/04/pz_poisson_degraded.jpg"
+    )
 \end{lstlisting}
 
 \pagebreak
@@ -462,9 +507,11 @@ transform_map = np.floor(255 * count_histogram).astype(np.uint8)
 \begin{flushleft}
 4. Gerar o gráfico com as imagens:
 \end{flushleft}
+
 \begin{flushleft}
 4.1 Exibir a imagem original , bem como seus respectivo histograma.
 \end{flushleft}
+
 \begin{flushleft}
 4.2 Exibir a  imagem equalizada, bem como seus respectivo histograma
 \end{flushleft}
@@ -1240,6 +1287,8 @@ Apresentando a imagem abaixo: com Raio = 1 e número de pontos = 8
 \end{figure}
 
 \subsubsection{Dimensão fractal (DF), usando Box-couting. A DF deve ser definida via coeficiente angular da regressão log x log. Os dois primeiros valores parciais de DF, em função das iterações 1 e 2, também devem ser apresentados}
+
+\pagebreak
 
 \section{Reforço de Aprendizado}
 
