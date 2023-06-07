@@ -7,7 +7,7 @@ import mahotas as mh
 from skimage.io import imread
 
 # Carregando a imagem segmentada
-image_path = 'img/segmentada.png'
+image_path = './images_generate/14/atividadefinal_h.png'
 segmented_image = imread(image_path, as_gray=True)
 
 # Calculando a matriz de coocorrência
@@ -21,8 +21,8 @@ energy = glcm.mean(axis=0)[1]
 correlation = glcm.mean(axis=0)[5]
 
 # Exibindo as características calculadas
-library.print_out('Contrast:', contrast)
-library.print_out('Dissimilarity:', dissimilarity)
-library.print_out('Homogeneity:', homogeneity)
-library.print_out('Energy:', energy)
-library.print_out('Correlation:', correlation)
+library.print_out('Contrast: ' + str(contrast))
+library.print_out('Dissimilarity: ' + str(dissimilarity))
+library.print_out('Homogeneity: ' + str(homogeneity))
+library.print_out('Energy: ' + str(energy))
+library.print_out('Correlation: ' + str(correlation))

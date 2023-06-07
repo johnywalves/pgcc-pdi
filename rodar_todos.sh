@@ -16,6 +16,8 @@ python3 ./sources/12_morphology.py
 python3 ./sources/13_texture_a.py
 python3 ./sources/13_texture_b.py
 python3 ./sources/13_texture_c.py
+python3 ./sources/13_texture_e_3D_1.py
+python3 ./sources/13_texture_e_barra_1.py
 python3 ./sources/13_texture_d_1.py
 python3 ./sources/13_texture_d_2.py
 python3 ./sources/13_texture_d_3.py

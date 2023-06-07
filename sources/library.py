@@ -3,12 +3,11 @@ import matplotlib.pyplot as plt
 import os
 import sys
 
-def print_out(text):    
-    print(text)
+file_out = open('./outputs/' + os.path.basename(sys.argv[0]).split('.')[0] + '.txt', "w")
 
-    file_out = open('./outputs/' + os.path.basename(sys.argv[0]).split('.')[0] + '.txt', "w")
-    file_out.write(text)
-    file_out.write('\n')
+def print_out(text):
+    print(text)
+    file_out.write(text + '\n')
 
 def plotar_histograma_cinzas(data, title, path):
     plt.clf()
